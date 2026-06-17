@@ -7,17 +7,109 @@
     <title>나의 할 일</title>
 </head>
 <body>
-    <header>
+    <header id="mobile-header">
+        <button id="hamburger">☰</button>
         <h3>할 일</h3>
     </header>
 
-    <main>
-
-        <div>
-            <h5>수행평가</h5>
-        </div>
         
+        <div id="app">
+        <aside id="sidebar">
+            <h2>일정</h2>
+            <nav>
+                <ul>
+                    <li>오늘의 일정</li>
+                </ul>
+            </nav>
+            <h2>갤럭시</h2>
+            <nav>
+                <ul>
+                    <li>할 일</li>
+                    <li>나의 공부</li>
+                </ul>
+            </nav>
+        </aside>
+
+    <main id="content">
+        <div class="list-header">
+            <h2>수행평가</h2>
+            <button class="filter-btn">≡</button>
+
+            <!-- 컬럼 헤더 -->
+            <div class="column-header">
+                <span>제목</span>
+                <span>Due date</span>
+                <span>Priority</span>
+                <span>Do date</span>    <!--Do date: 날짜-->
+                <span></span>   <!--Do date: 시간-->
+            </div>
+
+            <!-- 할 일 아이템 -->
+            <div class="task-item">
+                <input type="checkbox">
+                <div class="task-info">
+                    <span class="task-title">제목</span>
+                    <span class="task-sub">과목</span>
+                </div>
+                <span class="T_Due_Date">OOO 00</span>   <!--Due date-->
+                <span class="T_Priorit T_p1">(상태)</span>   <!--T_Priority-->
+                <span class="T_Do_Date">OOO 00</span>   <!--Do date-->
+                <span class="T_Do_Time">OOOO</span>   <!--Do date-->
+            </div>
+
+            <div class="list-header">
+            <h2>할 과제</h2>
+            <button class="filter-btn">≡</button>
+
+            <!-- 컬럼 헤더 -->
+            <div class="column-header">
+                <span>제목</span>
+                <span>Due date</span>
+                <span>Priority</span>
+                <span>Do date</span>    <!--Do date: 날짜-->
+                <span></span>   <!--Do date: 시간-->
+            </div>
+
+            <!-- 할 일 아이템 -->
+            <div class="task-item">
+                <input type="checkbox">
+                <div class="task-info">
+                    <span class="task-title">제목</span>
+                    <span class="task-sub">과목</span>
+                </div>
+                <span class="T_Due_Date">OOO 00</span>   <!--Due date-->
+                <span class="T_Priorit T_p1">(상태)</span>   <!--T_Priority-->
+                <span class="T_Do_Date">OOO 00</span>   <!--Do date-->
+                <span class="T_Do_Time">OOOO</span>   <!--Do date-->
+            </div>
+
+            <div class="list-header">
+            <h2>할 일</h2>
+            <button class="filter-btn">≡</button>
+
+            <!-- 컬럼 헤더 -->
+            <div class="column-header">
+                <span>제목</span>
+                <span>Due date</span>
+                <span>Priority</span>
+                <span>Do date</span>    <!--Do date: 날짜-->
+                <span></span>   <!--Do date: 시간-->
+            </div>
+
+            <!-- 할 일 아이템 -->
+            <div class="task-item">
+                <input type="checkbox">
+                <div class="task-info">
+                    <span class="task-title">제목</span>
+                    <span class="task-sub">과목</span>
+                </div>
+                <span class="T_Due_Date">OOO 00</span>   <!--Due date-->
+                <span class="T_Priorit T_p1">(상태)</span>   <!--T_Priority-->
+                <span class="T_Do_Date">OOO 00</span>   <!--Do date-->
+                <span class="T_Do_Time">OOOO</span>   <!--Do date-->
+            </div>
+
     </main>
-    
+
 </body>
 </html>
