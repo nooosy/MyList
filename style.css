@@ -93,3 +93,64 @@ html, body {
     border: none;
     padding: 5px 5px;
 }
+
+.status-btn{
+    width: 20px;
+    height: 20px;
+}
+
+.status-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.table-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.col-fixed {
+    width: 160px;
+    min-width: 160px;
+    padding: 12px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.scroll-area {
+    display: flex;
+    overflow-x: auto;
+    flex: 1;
+}
+
+.col {
+    min-width: 100px;
+    padding: 12px 8px;
+    white-space: nowrap;
+}
+
+.task-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.task-title {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.task-sub {
+    font-size: 12px;
+    color: #888;
+}
+
+.tagg {
+    background-color: #e6ffaa;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+}

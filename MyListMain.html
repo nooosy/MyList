@@ -38,47 +38,33 @@
                 <h2>수행평가</h2>
                 <button class="filter-btn">⁝</button>
             </div>
-            <div class="column-header">
-                <span>제목</span>
-                <span>Due date</span>
-                <span>Priority</span>
-                <span>Do date</span>
-                <span>Do time</span>
-            </div>
-            <div class="task-item">
-                <input type="checkbox">
-                <div class="task-info">
-                    <span class="task-title">제목</span>
-                    <span class="task-sub">과목</span>
+
+            <div class="table-row header-row">
+                <div class="col-fixed">제목</div>
+                <div class="scroll-area">
+                    <span class="col">Due date</span>
+                    <span class="col">Priority</span>
+                    <span class="col">Do date</span>
+                    <span class="col">Do time</span>
                 </div>
-                <span class="T_Due_Date">OOO 00</span>
-                <span class="T_Priority T_p1">(상태)</span>
-                <span class="T_Do_Date">OOO 00</span>
-                <span class="T_Do_Time">OOOO</span>
             </div>
 
-            <!-- 할 과제 목록 -->
-            <div class="list-header">
-                <h2>할 과제</h2>
-                <button class="filter-btn">⁝</button>
-            </div>
-            <div class="column-header">
-                <span>제목</span>
-                <span>Due date</span>
-                <span>Priority</span>
-                <span>Do date</span>
-                <span>Do time</span>
-            </div>
-            <div class="task-item">
-                <input type="checkbox">
-                <div class="task-info">
-                    <span class="task-title">제목</span>
-                    <span class="task-sub">과목</span>
+            <div class="table-row">
+                <div class="col-fixed">
+                    <div class="status-btn">
+                        <img src="./Asset/status/sta0.png" class="status-icon">
+                    </div>
+                    <div class="task-info">
+                        <span class="task-title">제목</span>
+                        <span class="task-sub">과목</span>
+                    </div>
                 </div>
-                <span class="T_Due_Date">OOO 00</span>
-                <span class="T_Priority T_p1">(상태)</span>
-                <span class="T_Do_Date">OOO 00</span>
-                <span class="T_Do_Time">OOOO</span>
+                <div class="scroll-area">
+                    <span class="col">OOO 00</span>
+                    <span class="col tagg T_p1">긴급</span>
+                    <span class="col">OOO 00</span>
+                    <span class="col tagg">아침</span>
+                </div>
             </div>
 
             <!-- 할 일 목록 -->
@@ -86,23 +72,47 @@
                 <h2>할 일</h2>
                 <button class="filter-btn">⁝</button>
             </div>
-            <div class="column-header">
-                <span>제목</span>
-                <span>Due date</span>
-                <span>Priority</span>
-                <span>Do date</span>
-                <span>Do time</span>
-            </div>
-            <div class="task-item">
-                <input type="checkbox">
-                <div class="task-info">
-                    <span class="task-title">제목</span>
-                    <span class="task-sub">과목</span>
+
+            <div class="table-row">
+                <div class="col-fixed">
+                    <div class="status-btn">
+                        <img src="./Asset/status/sta0.png" class="status-icon">
+                    </div>
+                    <div class="task-info">
+                        <span class="task-title">제목</span>
+                        <span class="task-sub">과목</span>
+                    </div>
                 </div>
-                <span class="T_Due_Date">OOO 00</span>
-                <span class="T_Priority T_p1">(상태)</span>
-                <span class="T_Do_Date">OOO 00</span>
-                <span class="T_Do_Time">OOOO</span>
+                <div class="scroll-area">
+                    <span class="col">OOO 00</span>
+                    <span class="col tagg T_p1">긴급</span>
+                    <span class="col">OOO 00</span>
+                    <span class="col tagg">아침</span>
+                </div>
+            </div>
+
+            <!-- 할 일 과제 -->
+            <div class="list-header">
+                <h2>할 과제</h2>
+                <button class="filter-btn">⁝</button>
+            </div>
+
+            <div class="table-row">
+                <div class="col-fixed">
+                    <div class="status-btn">
+                        <img src="./Asset/status/sta0.png" class="status-icon">
+                    </div>
+                    <div class="task-info">
+                        <span class="task-title">제목</span>
+                        <span class="task-sub">과목</span>
+                    </div>
+                </div>
+                <div class="scroll-area">
+                    <span class="col">OOO 00</span>
+                    <span class="col tagg T_p1">긴급</span>
+                    <span class="col">OOO 00</span>
+                    <span class="col tagg">아침</span>
+                </div>
             </div>
 
         </main>
