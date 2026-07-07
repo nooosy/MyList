@@ -97,6 +97,7 @@ html, body {
 .status-btn{
     width: 20px;
     height: 20px;
+    padding-right: 30px
 }
 
 .status-icon {
@@ -132,6 +133,11 @@ html, body {
     white-space: nowrap;
 }
 
+.col.tagg {
+    min-width: 0;
+    width: fit-content;
+}
+
 .task-info {
     display: flex;
     flex-direction: column;
@@ -147,10 +153,24 @@ html, body {
     color: #888;
 }
 
+h2{
+    padding-top: 50px;
+}
+
 .tagg {
     background-color: #e6ffaa;
     border-radius: 20px;
     padding: 4px 10px;
+    margin: 15px;
     font-size: 12px;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    width: fit-content;
 }
+
+.T_p1 { background-color: #E53E3E; color: white;}
+.T_p2 { background-color: #E67E22; color: white;}
+.T_p3 { background-color: #F6C90E;}
+.T_p4 { background-color: #3498DB; color: white;}
