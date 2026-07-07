@@ -125,17 +125,25 @@ html, body {
     display: flex;
     overflow-x: auto;
     flex: 1;
+    gap: 8px;
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;   /* IE, 구형 Edge */
+}
+
+.col-fixed.tititle {
+    visibility: hidden; /* 일단 헤더의 '제목'은 숨김 */
+}
+
+.scroll-area::-webkit-scrollbar {
+    display: none;                /* Chrome, Safari, 최신 Edge */
 }
 
 .col {
     min-width: 100px;
-    padding: 12px 8px;
     white-space: nowrap;
-}
-
-.col.tagg {
-    min-width: 0;
-    width: fit-content;
+    padding: 12px 8px;
+    display: flex;
+    align-items: center;
 }
 
 .task-info {
@@ -153,15 +161,14 @@ html, body {
     color: #888;
 }
 
-h2{
-    padding-top: 50px;
+h2 listname{
+    margin: 60px 0px 50px 0px;
 }
 
 .tagg {
     background-color: #e6ffaa;
     border-radius: 20px;
-    padding: 4px 10px;
-    margin: 15px;
+    padding: 5px 15px;
     font-size: 12px;
     white-space: nowrap;
     display: inline-flex;
@@ -174,3 +181,8 @@ h2{
 .T_p2 { background-color: #E67E22; color: white;}
 .T_p3 { background-color: #F6C90E;}
 .T_p4 { background-color: #3498DB; color: white;}
+
+.hidden_height_box {
+    height: 50px;
+    visibility: hidden;
+}
