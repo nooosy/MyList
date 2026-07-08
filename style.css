@@ -142,6 +142,19 @@ html, body {
     border-bottom: 1px solid #eee;
 }
 
+.table-row.header-row{
+    background-color: #f8f8f8;
+    border-radius: 10px;
+}
+
+.table-row.add-newrow {
+    display: flex;
+    align-items: center;
+    color: #7a7a7a;
+    border-bottom: 1px solid #eee;
+    opacity: 0.8;
+}
+
 .col-fixed {
     width: 35%;
     min-width: 160px;
