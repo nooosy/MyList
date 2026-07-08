@@ -80,9 +80,11 @@
             </div>
 
             
-            <div class="table-row add-newrow">
+            <div class="table-row add-newrow" id="add-btn-sh">
                 <div class="col-fixed">
-                    <div class="status-btn"></div>
+                    <div class="add-icon">
+                        <img src="./Asset/icons/plus_new.png" class="add-iconpic">
+                    </div>
                     <div class="task-info">
                         <span class="task-title">할 일 추가...</span>
                     </div>
@@ -129,9 +131,11 @@
                 </div>
             </div>
 
-            <div class="table-row add-newrow">
+            <div class="table-row add-newrow" id="add-btn-hi">
                 <div class="col-fixed">
-                    <div class="status-btn"></div>
+                    <div class="add-icon">
+                        <img src="./Asset/icons/plus_new.png" class="add-iconpic">
+                    </div>
                     <div class="task-info">
                         <span class="task-title">할 일 추가...</span>
                     </div>
@@ -178,9 +182,11 @@
                 </div>
             </div>
 
-            <div class="table-row add-newrow">
+            <div class="table-row add-newrow" id="add-btn-hg">
                 <div class="col-fixed">
-                    <div class="status-btn"></div>
+                    <div class="add-icon">
+                        <img src="./Asset/icons/plus_new.png" class="add-iconpic">
+                    </div>
                     <div class="task-info">
                         <span class="task-title">할 일 추가...</span>
                     </div>
@@ -189,6 +195,16 @@
 
             <div class="hidden_height_box"> </div>
         </main>
+    </div>
+
+    <div id="add-task-modal">
+        <div id="modal-content">
+            <div id="modal-header">
+                <h2>할 일 추가</h2>
+                <button id="modal-close-btn">✕</button>
+            </div>
+            <input type="text" id="add-task-name" placeholder="할 일 제목" value="" maxlength="20" required>
+        </div>
     </div>
 
     <nav id="tab-bar">
@@ -213,7 +229,6 @@
             <span>Do date</span>
         </button>
     </nav>
-
 
 <script src="main.js"></script>
 </body>

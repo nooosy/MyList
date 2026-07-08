@@ -7,7 +7,7 @@ html, body {
 #overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.4);
+    background: rgba(0,0,0,0.4);
 
     opacity: 0;
     visibility: hidden;
@@ -130,16 +130,30 @@ html, body {
     padding-right: 30px
 }
 
+.add-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.add-iconpic{
+    width: 15px;
+    height: 15px;
+    padding-right: 30px
+}
+
 .status-icon {
     width: 20px;
     height: 20px;
     object-fit: contain;
 }
 
+
 .table-row {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #eee;
+    margin-left: 20px;
 }
 
 .table-row.header-row{
@@ -153,6 +167,7 @@ html, body {
     color: #7a7a7a;
     border-bottom: 1px solid #eee;
     opacity: 0.8;
+    cursor: pointer;
 }
 
 .col-fixed {
@@ -231,7 +246,52 @@ h2 listname{
 }
 
 
+#add-task-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 800;
+}
 
+#modal-content {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    padding: 24px;
+    min-height: 50vh;
+    height: 75vh;
+}
+
+#modal-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#modal-close-btn{
+    background-color: #ffffff;
+    color:#363636;
+    margin: 10px;
+    font-size: 15pt;
+    border: none;
+    padding: 5px 5px;
+}
+
+#add-task-name{
+    width: 80%;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 20px;
+}
+
+input:focus {
+    outline: none;
+}
 
 /* iPad 11" 이상 */
 @media (min-width:820px){
@@ -289,5 +349,42 @@ h2 listname{
     #hamburger{
         visibility: hidden;
         width: 0;
+    }
+
+    #tab-bar {
+    left: 18vw;
+    width: calc(100% - 18vw);
+    display: flex;
+    justify-content: space-around;
+    bottom: 0;
+    right: 0;
+    align-items: center;
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    padding: 10px 0;
+}
+
+.tab-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .tab-item img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+    }
+
+    .table-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    margin-left: 0;
     }
 }

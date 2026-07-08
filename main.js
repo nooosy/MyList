@@ -1,3 +1,4 @@
+//사이드바 열고 닫기
 let sidebar = document.getElementById("sidebar");
 let overlay = document.getElementById("overlay");
 let hamburger = document.getElementById("hamburger");
@@ -13,7 +14,7 @@ overlay.addEventListener("click", ()=> {
 });
 
 
-// 스크롤 동기화
+//스크롤 동기화
 const scrollAreas = document.querySelectorAll(".scroll-area");
 let syncing = false;
 
@@ -29,3 +30,9 @@ scrollAreas.forEach(area => {
         syncing = false;
     });
 });
+
+//과제 추가 버튼
+let add_sh_btn = document.getElementById("add-btn-sh");
+let add_hi_btn = document.getElementById("add-btn-hi");
+let add_hg_btn = document.getElementById("add-btn-hg");
+
