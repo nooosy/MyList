@@ -417,9 +417,36 @@ input[type="date"]:focus, select:focus {
     }
 
     .table-row {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    margin-left: 0;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        margin-left: 0;
+    }
+
+
+    #modal-content {
+        position: fixed;
+        top: 70px;
+        padding-top: 70px;
+        bottom: 0;
+        right: 0;
+        left: auto;
+        width: 400px;
+        border-radius: 0;
+        overflow-y: auto;
+    }
+    
+    #modal-header {
+        display: none;
+    }
+
+    #add-task-name{
+    width: 100%;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 20px;
+    margin: 0 0 10px 0;
     }
 }

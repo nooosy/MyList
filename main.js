@@ -13,6 +13,20 @@ overlay.addEventListener("click", ()=> {
     overlay.classList.remove("open");
 });
 
+//모달
+let add_new_sh = document.getElementById("add-btn-sh");
+let add_new_hi = document.getElementById("add-btn-hi");
+let add_new_hg = document.getElementById("add-btn-hg");
+
+hamburger.addEventListener("click", ()=> {
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("open");
+});
+
+overlay.addEventListener("click", ()=> {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("open");
+});
 
 //스크롤 동기화
 const scrollAreas = document.querySelectorAll(".scroll-area");
