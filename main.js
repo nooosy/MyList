@@ -133,8 +133,32 @@ function syncScrollAreas() {
 
 syncScrollAreas();
 
-//과제 추가 버튼
-let add_sh_btn = document.getElementById("add-btn-sh");
-let add_hi_btn = document.getElementById("add-btn-hi");
-let add_hg_btn = document.getElementById("add-btn-hg");
+let statusPopup = document.getElementById("status-popup");
+let currentStatusBtn = null;
+
+// status-btn 클릭
+document.addEventListener("click", (e)=> {
+    let btn = e.target.closest(".status-btn");
+    if (btn) {
+        currentStatusBtn = btn;
+        let rect = btn.getBoundingClientRect();
+        statusPopup.style.top = (rect.bottom + 8) + "px";
+        statusPopup.style.left = rect.left + "px";
+        statusPopup.classList.add("open");
+        e.stopPropagation();
+        return;
+    }
+    statusPopup.classList.remove("open");
+});
+
+// 상태 선택
+document.querySelectorAll(".status-option").forEach(option => {
+    option.addEventListener("click", ()=> {
+        let status = option.dataset.status;
+        if (currentStatusBtn) {
+            currentStatusBtn.querySelector(".status-icon").src = `./Asset/status/sta${status}.png`;
+        }
+        statusPopup.classList.remove("open");
+    });
+});
 
