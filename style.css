@@ -285,19 +285,19 @@ h2 listname{
     height: 75vh;
 }
 
-#modal-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-#modal-close-btn{
-    background-color: #ffffff;
-    color:#363636;
-    margin: 10px;
-    font-size: 15pt;
+#modal-delete-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    background: #E53E3E;
+    color: white;
     border: none;
-    padding: 5px 5px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    visibility: hidden;
 }
 
 .hidden_height_box {
@@ -506,8 +506,11 @@ input[type="date"]:focus, select:focus {
     }
 
     #modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         display: none;
-    }
+    }   
 
     #add-task-name{
     width: 100%;
