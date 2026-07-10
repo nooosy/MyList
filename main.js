@@ -13,6 +13,9 @@ overlay.addEventListener("click", ()=> {
     overlay.classList.remove("open");
 });
 
+
+let what_modal = "add";
+
 //모달
 let add_list = "sh";
 
@@ -34,20 +37,32 @@ function resetModal() {
 
 add_new_sh.addEventListener("click", ()=> {
     add_list = "sh";
+    what_modal = "add"
     modal_content.classList.toggle("open");
     modal_overlay.classList.toggle("open");
+    requestAnimationFrame(() => {
+            modal_content.scrollTop = 0;
+    });
 });
 
 add_new_hi.addEventListener("click", ()=> {
     add_list = "hi";
+    what_modal = "add"
     modal_content.classList.toggle("open");
     modal_overlay.classList.toggle("open");
+    requestAnimationFrame(() => {
+            modal_content.scrollTop = 0;
+    });
 });
 
 add_new_hg.addEventListener("click", ()=> {
     add_list = "hg";
+    what_modal = "add"
     modal_content.classList.toggle("open");
     modal_overlay.classList.toggle("open");
+    requestAnimationFrame(() => {
+            modal_content.scrollTop = 0;
+    });
 });
 
 modal_content.addEventListener("click", (e)=> {
@@ -57,6 +72,11 @@ modal_content.addEventListener("click", (e)=> {
 modal_overlay.addEventListener("click", ()=> {
     modal_content.classList.remove("open");
     modal_overlay.classList.remove("open");
+    if (what_modal === "edit") {
+        resetModal();
+        currentEditRow = null;
+    }
+    what_modal = "add";
 });
 
 const priorityText = { "1":"긴급", "2":"높음", "3":"중간", "4":"보통" };
@@ -104,7 +124,9 @@ document.getElementById("modal-ok-btn").addEventListener("click", ()=> {    //�
 
     modal_overlay.classList.remove("open");
     modal_content.classList.remove("open");
-    resetModal()
+    resetModal();
+    currentEditRow = null;
+    what_modal = "add";
 });
 
 
@@ -160,5 +182,50 @@ document.querySelectorAll(".status-option").forEach(option => {
         }
         statusPopup.classList.remove("open");
     });
+});
+
+let currentEditRow = null;  // 수정 중인 행 저장
+
+// 수정
+document.addEventListener("click", (e)=> {
+    let taskInfo = e.target.closest(".task-info");
+    if (taskInfo) {
+        what_modal = "edit";
+        let row = taskInfo.closest(".table-row");
+        currentEditRow = row;
+
+        // 기존 값 불러오기
+        let title = row.querySelector(".task-title").textContent;
+        let sub = row.querySelector(".task-sub")?.textContent || "";
+        let cols = row.querySelectorAll(".col");
+        let dueDate = cols[0].textContent;
+        let priority = cols[1].querySelector(".tagg").className.match(/T_p(\d)/)?.[1] || "1";
+        let doDate = cols[2].textContent;
+        let doTimeText = cols[3].querySelector(".tagg").textContent;
+
+        // 모달에 값 채우기
+        document.getElementById("add-task-name").value = title;
+        document.getElementById("add-task-sub").value = sub;
+        document.getElementById("add-due-date").value = dueDate;
+        document.getElementById("add-priority").value = priority;
+        document.getElementById("add-do-date").value = doDate;
+
+        // doTime 텍스트로 value 찾기
+        let doTimeEl = document.getElementById("add-do-time");
+        for (let opt of doTimeEl.options) {
+            if (opt.text === doTimeText) {
+                doTimeEl.value = opt.value;
+                break;
+            }
+        }
+
+        // 모달 열기
+        modal_overlay.classList.add("open");
+        modal_content.classList.add("open");
+        e.stopPropagation();
+        requestAnimationFrame(() => {
+            modal_content.scrollTop = 0;
+        });
+    }
 });
 

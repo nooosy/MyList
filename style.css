@@ -208,6 +208,7 @@ html, body {
 .task-info {
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
 .task-title {
