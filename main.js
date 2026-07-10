@@ -14,19 +14,42 @@ overlay.addEventListener("click", ()=> {
 });
 
 //모달
+let add_list = "sh";
+
 let add_new_sh = document.getElementById("add-btn-sh");
 let add_new_hi = document.getElementById("add-btn-hi");
 let add_new_hg = document.getElementById("add-btn-hg");
 
-hamburger.addEventListener("click", ()=> {
-    sidebar.classList.toggle("open");
-    overlay.classList.toggle("open");
+let modal_content = document.getElementById("modal-content");
+let modal_overlay = document.getElementById("add-task-modal");
+
+add_new_sh.addEventListener("click", ()=> {
+    add_list = "sh";
+    modal_content.classList.toggle("open");
+    modal_overlay.classList.toggle("open");
 });
 
-overlay.addEventListener("click", ()=> {
-    sidebar.classList.remove("open");
-    overlay.classList.remove("open");
+add_new_hi.addEventListener("click", ()=> {
+    add_list = "hi";
+    modal_content.classList.toggle("open");
+    modal_overlay.classList.toggle("open");
 });
+
+add_new_hg.addEventListener("click", ()=> {
+    add_list = "hg";
+    modal_content.classList.toggle("open");
+    modal_overlay.classList.toggle("open");
+});
+
+modal_content.addEventListener("click", (e)=> {
+    e.stopPropagation();
+});
+
+modal_overlay.addEventListener("click", ()=> {
+    modal_content.classList.remove("open");
+    modal_overlay.classList.remove("open");
+});
+
 
 //스크롤 동기화
 const scrollAreas = document.querySelectorAll(".scroll-area");

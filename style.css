@@ -250,7 +250,13 @@ h2 listname{
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.4);
-    z-index: 800;
+    z-index: 910;
+
+    display: none;
+}
+
+#add-task-modal.open {
+    display: block;
 }
 
 #modal-content {
@@ -399,7 +405,7 @@ input[type="date"]:focus, select:focus {
     padding: 10px 0;
 }
 
-.tab-item {
+    .tab-item {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -423,7 +429,6 @@ input[type="date"]:focus, select:focus {
         margin-left: 0;
     }
 
-
     #modal-content {
         position: fixed;
         top: 70px;
@@ -434,8 +439,15 @@ input[type="date"]:focus, select:focus {
         width: 400px;
         border-radius: 0;
         overflow-y: auto;
+
+        transform: translateY(-100%);
+        transition: transform 0.3s;
     }
     
+    #modal-content.open {
+        transform: translateY(0%);
+    }
+
     #modal-header {
         display: none;
     }
