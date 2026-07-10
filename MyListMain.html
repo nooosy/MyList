@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <div class="table-row">
+<!--        <div class="table-row">
                 <div class="col-fixed">
                     <div class="status-btn">
                         <img src="./Asset/status/sta0.png" class="status-icon">
@@ -74,10 +74,10 @@
                     </span>
                     <span class="col">OOO 00</span>
                     <span class="col">
-                        <span class="tagg">아침</span>
+                        <span class="tagg tt1">아침</span>
                     </span>
                 </div>
-            </div>
+            </div> -->
 
             
             <div class="table-row add-newrow" id="add-btn-sh">
@@ -109,7 +109,7 @@
                 </div>
             </div>
 
-            <div class="table-row">
+            <!-- <div class="table-row">
                 <div class="col-fixed">
                     <div class="status-btn">
                         <img src="./Asset/status/sta0.png" class="status-icon">
@@ -126,10 +126,10 @@
                     </span>
                     <span class="col">OOO 00</span>
                     <span class="col">
-                        <span class="tagg">아침</span>
+                        <span class="tagg tt1">아침</span>
                     </span>
                 </div>
-            </div>
+            </div> -->
 
             <div class="table-row add-newrow" id="add-btn-hi">
                 <div class="col-fixed">
@@ -160,7 +160,7 @@
                 </div>
             </div>
 
-            <div class="table-row">
+            <!-- <div class="table-row">
                 <div class="col-fixed">
                     <div class="status-btn">
                         <img src="./Asset/status/sta0.png" class="status-icon">
@@ -177,10 +177,10 @@
                     </span>
                     <span class="col">OOO 00</span>
                     <span class="col">
-                        <span class="tagg">아침</span>
+                        <span class="tagg tt1">아침</span>
                     </span>
                 </div>
-            </div>
+            </div> -->
 
             <div class="table-row add-newrow" id="add-btn-hg">
                 <div class="col-fixed">
@@ -205,10 +205,12 @@
             </div>
             <input type="text" id="add-task-name" placeholder="할 일 제목" value="" maxlength="20" required>
             <div id="modal-left">
+                <h4>Subject</h4>
+                <input type="text" id="add-task-sub" placeholder="과목" maxlength="10">
                 <h4>Due Date</h4>
                 <input type="date" id="add-due-date" value="" required>
                 <h4>Priority</h4>
-                <select>
+                <select id="add-priority">
                     <option value="1">긴급</option>
                     <option value="2">높음</option>
                     <option value="3">중간</option>
@@ -217,7 +219,7 @@
                 <h4>Do date</h4>
                 <input type="date" id="add-do-date" value="" required>
                 <h4>Do Time</h4>
-                <select>
+                <select id="add-do-time">
                     <option value="1">아침</option>
                     <option value="2">1~4교시</option>
                     <option value="3">점심</option>
