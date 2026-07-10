@@ -35,31 +35,37 @@ function resetModal() {
     document.getElementById("add-do-time").value = "1";
 }
 
-add_new_sh.addEventListener("click", ()=> {
+add_new_sh.addEventListener("click", (e)=> {
+    e.stopPropagation();
+    
     add_list = "sh";
-    what_modal = "add"
-    modal_content.classList.toggle("open");
-    modal_overlay.classList.toggle("open");
+    what_modal = "add";
+    modal_content.classList.add("open");
+    modal_overlay.classList.add("open");
     requestAnimationFrame(() => {
             modal_content.scrollTop = 0;
     });
 });
 
-add_new_hi.addEventListener("click", ()=> {
+add_new_hi.addEventListener("click", (e)=> {
+    e.stopPropagation();
+    
     add_list = "hi";
-    what_modal = "add"
-    modal_content.classList.toggle("open");
-    modal_overlay.classList.toggle("open");
+    what_modal = "add";
+    modal_content.classList.add("open");
+    modal_overlay.classList.add("open");
     requestAnimationFrame(() => {
             modal_content.scrollTop = 0;
     });
 });
 
-add_new_hg.addEventListener("click", ()=> {
+add_new_hg.addEventListener("click", (e)=> {
+    e.stopPropagation();
+    
     add_list = "hg";
-    what_modal = "add"
-    modal_content.classList.toggle("open");
-    modal_overlay.classList.toggle("open");
+    what_modal = "add";
+    modal_content.classList.add("open");
+    modal_overlay.classList.add("open");
     requestAnimationFrame(() => {
             modal_content.scrollTop = 0;
     });
@@ -72,6 +78,7 @@ modal_content.addEventListener("click", (e)=> {
 modal_overlay.addEventListener("click", ()=> {
     modal_content.classList.remove("open");
     modal_overlay.classList.remove("open");
+    document.getElementById("modal-header").style.display = "none";
     if (what_modal === "edit") {
         resetModal();
         currentEditRow = null;
@@ -94,31 +101,65 @@ document.getElementById("modal-ok-btn").addEventListener("click", ()=> {    //�
     let doTime = doTimeEl.value;
     let doTimeText = doTimeEl.options[doTimeEl.selectedIndex].text;
     
+    // 수정 모드
+    if (what_modal === "edit" && currentEditRow) {
+        currentEditRow.querySelector(".task-title").textContent = title;
+        currentEditRow.querySelector(".task-sub").textContent = sub;
+        
+        let cols = currentEditRow.querySelectorAll(".col");
+        cols[0].textContent = dueDate;
+        cols[1].innerHTML = `<span class="tagg ${priorityClass[priority]}">${priorityText[priority]}</span>`;
+        cols[2].textContent = doDate;
+        cols[3].innerHTML = `<span class="tagg ${dtimeclass[doTime]}">${doTimeText}</span>`;
+        document.getElementById("modal-header").style.display = "block";
+    } 
+    // 추가 모드
+    else {
+        let newRow = document.createElement("div");
+        newRow.className = "table-row";
+        newRow.innerHTML = `
+            <div class="col-fixed">
+                <div class="status-btn">
+                    <img src="./Asset/status/sta0.png" class="status-icon">
+                </div>
+                <div class="task-info">
+                    <span class="task-title">${title}</span>
+                    <span class="task-sub">${sub}</span>
+                </div>
+            </div>
+            <div class="scroll-area">
+                <span class="col">${dueDate}</span>
+                <span class="col"><span class="tagg ${priorityClass[priority]}">${priorityText[priority]}</span></span>
+                <span class="col">${doDate}</span>
+                <span class="col"><span class="tagg ${dtimeclass[doTime]}">${doTimeText}</span></span>
+            </div>
+        `;
 
-    // 새 행 만들기
-    let newRow = document.createElement("div");
-    newRow.className = "table-row";
-    newRow.innerHTML = `
-        <div class="col-fixed">
-            <div class="status-btn">
-                <img src="./Asset/status/sta0.png" class="status-icon">
-            </div>
-            <div class="task-info">
-                <span class="task-title">${title}</span>
-                <span class="task-sub">${sub}</span>
-            </div>
-        </div>
-        <div class="scroll-area">
-            <span class="col">${dueDate}</span>
-            <span class="col"><span class="tagg ${priorityClass[priority]}">${priorityText[priority]}</span></span>
-            <span class="col">${doDate}</span>
-            <span class="col"><span class="tagg ${dtimeclass[doTime]}">${doTimeText}</span></span>
-        </div>
-    `;
+        let addBtn = document.getElementById("add-btn-" + add_list);
+        addBtn.parentNode.insertBefore(newRow, addBtn);
+
+        let newScrollArea = newRow.querySelector(".scroll-area");
+        if (newScrollArea) {
+            newScrollArea.addEventListener("scroll", () => {
+                if (syncing) return;
+                syncing = true;
+                document.querySelectorAll(".scroll-area").forEach(other => {
+                    if (other !== newScrollArea) {
+                        other.scrollLeft = newScrollArea.scrollLeft;
+                    }
+                });
+                syncing = false;
+            });
+        }
+    }
+
+    modal_overlay.classList.remove("open");
+    modal_content.classList.remove("open");
+    resetModal();
+    currentEditRow = null;
+    what_modal = "add";
 
     let addBtn = document.getElementById("add-btn-" + add_list);
-    addBtn.parentNode.insertBefore(newRow, addBtn);
-
     addBtn.parentNode.insertBefore(newRow, addBtn);
     syncScrollAreas();
 
@@ -228,4 +269,3 @@ document.addEventListener("click", (e)=> {
         });
     }
 });
-
