@@ -107,7 +107,7 @@ document.getElementById("modal-delete-btn").addEventListener("click", ()=> {
 });
 
 // 완료 버튼
-document.getElementById("modal-ok-btn").addEventListener("click", ()=> {
+document.getElementById("modal-ok-btn").addEventListener("click", async()=> {
     let title = document.getElementById("add-task-name").value;
     if (!title) return;
 
@@ -145,6 +145,25 @@ document.getElementById("modal-ok-btn").addEventListener("click", ()=> {
         newRow.innerHTML = innerHTML;
         let addBtn = document.getElementById("add-btn-" + add_list);
         addBtn.parentNode.insertBefore(newRow, addBtn);
+    }
+
+    const taskData = {
+        title: title,
+        sub: sub,
+        dueDate: dueDate,
+        priority: priority,
+        doDate: doDate,
+        doTime: doTime,
+        status: "0",
+        list: add_list
+    };
+
+    // Firestore에 저장
+    try {
+        const docRef = await addDoc(collection(db, "tasks"), taskData);
+        console.log("저장됨:", docRef.id);
+    } catch (e) {
+        console.error("저장 실패:", e);
     }
 
     syncScrollAreas();
