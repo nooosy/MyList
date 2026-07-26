@@ -1,3 +1,23 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyD8hyrOqYdoEAEur_0x6jRoi-vLn5zx2ds",
+  authDomain: "galaxy-todo-60c61.firebaseapp.com",
+  projectId: "galaxy-todo-60c61",
+  storageBucket: "galaxy-todo-60c61.firebasestorage.app",
+  messagingSenderId: "349161238390",
+  appId: "1:349161238390:web:ac263ccbf5fe5a800ed457"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+
+const db = getFirestore(app);
+
 //사이드바 열고 닫기
 let sidebar = document.getElementById("sidebar");
 let overlay = document.getElementById("overlay");
@@ -18,9 +38,7 @@ let what_modal = "add";
 let add_list = "sh";
 let currentEditRow = null;
 let syncing = false;
-
-let modal_content = document.getElementById("modal-content");
-let modal_overlay = document.getElementById("add-task-modal");
+let scrollAreasSynced = false; // 스크롤 리스너 중복 등록 방지 플래그
 
 const priorityText = { "1":"긴급", "2":"높음", "3":"중간", "4":"보통" };
 const priorityClass = { "1":"T_p1", "2":"T_p2", "3":"T_p3", "4":"T_p4" };
@@ -51,6 +69,9 @@ function openModal() {
         modal_content.scrollTop = 0;
     });
 }
+
+let modal_content = document.getElementById("modal-content");
+let modal_overlay = document.getElementById("add-task-modal");
 
 // 모달 닫기
 function closeModal() {
@@ -96,8 +117,19 @@ modal_overlay.addEventListener("click", ()=> {
 });
 
 // 삭제 버튼
-document.getElementById("modal-delete-btn").addEventListener("click", ()=> {
+document.getElementById("modal-delete-btn").addEventListener("click", async (e)=> {
+    e.stopPropagation();
     if (currentEditRow) {
+        // Firestore에서 삭제
+        let docId = currentEditRow.dataset.id;
+        if (docId) {
+            try {
+                await deleteDoc(doc(db, "tasks", docId));
+                console.log("삭제됨!");
+            } catch (e) {
+                console.error("삭제 실패:", e);
+            }
+        }
         currentEditRow.remove();
         currentEditRow = null;
     }
@@ -119,11 +151,30 @@ document.getElementById("modal-ok-btn").addEventListener("click", async()=> {
     let doTime = doTimeEl.value;
     let doTimeText = doTimeEl.options[doTimeEl.selectedIndex].text;
 
+    const taskData = {
+        title: title,
+        sub: sub,
+        dueDate: dueDate,
+        priority: priority,
+        doDate: doDate,
+        doTime: doTime,
+        list: add_list
+    };
+
+    if (what_modal === "edit" && currentEditRow) {
+        // 편집 모드일 땐 기존 상태 아이콘에서 현재 status를 읽어와서 유지
+        let statusIcon = currentEditRow.querySelector(".status-icon");
+        let currentStatus = statusIcon.src.match(/sta(\d)\.png/)?.[1] || "0";
+        taskData.status = currentStatus;
+    } else {
+        // 새로 추가할 때만 0으로 시작
+        taskData.status = "0";
+    }
+
     let innerHTML = `
         <div class="col-fixed">
             <div class="status-btn">
-                <img src="./Asset/status/sta0.png" class="status-icon">
-            </div>
+                <img src="./Asset/status/sta${taskData.status}.png" class="status-icon">            </div>
             <div class="task-info">
                 <span class="task-title">${title}</span>
                 <span class="task-sub">${sub}</span>
@@ -139,31 +190,33 @@ document.getElementById("modal-ok-btn").addEventListener("click", async()=> {
 
     if (what_modal === "edit" && currentEditRow) {
         currentEditRow.innerHTML = innerHTML;
+
+        // Firestore 업데이트
+        let docId = currentEditRow.dataset.id;
+        if (docId) {
+            try {
+                await updateDoc(doc(db, "tasks", docId), taskData);
+                console.log("수정됨!");
+            } catch (e) {
+                console.error("수정 실패:", e);
+            }
+        }
     } else {
         let newRow = document.createElement("div");
         newRow.className = "table-row";
         newRow.innerHTML = innerHTML;
+        newRow.dataset.list = add_list;
         let addBtn = document.getElementById("add-btn-" + add_list);
         addBtn.parentNode.insertBefore(newRow, addBtn);
-    }
 
-    const taskData = {
-        title: title,
-        sub: sub,
-        dueDate: dueDate,
-        priority: priority,
-        doDate: doDate,
-        doTime: doTime,
-        status: "0",
-        list: add_list
-    };
-
-    // Firestore에 저장
-    try {
-        const docRef = await addDoc(collection(db, "tasks"), taskData);
-        console.log("저장됨:", docRef.id);
-    } catch (e) {
-        console.error("저장 실패:", e);
+        // Firestore 추가
+        try {
+            const docRef = await addDoc(collection(db, "tasks"), taskData);
+            newRow.dataset.id = docRef.id;
+            console.log("저장됨:", docRef.id);
+        } catch (e) {
+            console.error("저장 실패:", e);
+        }
     }
 
     syncScrollAreas();
@@ -176,6 +229,9 @@ document.getElementById("modal-ok-btn").addEventListener("click", async()=> {
 
 // 스크롤 동기화
 function syncScrollAreas() {
+    if (scrollAreasSynced) return;
+    scrollAreasSynced = true;
+
     document.querySelectorAll(".scroll-area").forEach(area => {
         area.addEventListener("scroll", () => {
             if (syncing) return;
@@ -209,16 +265,31 @@ document.addEventListener("click", (e)=> {
 });
 
 document.querySelectorAll(".status-option").forEach(option => {
-    option.addEventListener("click", ()=> {
+    option.addEventListener("click", async ()=> {
         let status = option.dataset.status;
         if (currentStatusBtn) {
             currentStatusBtn.querySelector(".status-icon").src = `./Asset/status/sta${status}.png`;
+            
+            // 해당 행의 doc ID 가져오기
+            let row = currentStatusBtn.closest(".table-row");
+            let docId = row?.dataset.id;
+            
+            // Firestore 업데이트
+            if (docId) {
+                try {
+                    await updateDoc(doc(db, "tasks", docId), {
+                        status: status
+                    });
+                    console.log("상태 업데이트됨!");
+                } catch (e) {
+                    console.error("업데이트 실패:", e);
+                }
+            }
         }
         statusPopup.classList.remove("open");
     });
 });
 
-// 수정 (task-info 클릭)
 document.addEventListener("click", (e)=> {
     let taskInfo = e.target.closest(".task-info");
     if (!taskInfo) return;
@@ -228,6 +299,7 @@ document.addEventListener("click", (e)=> {
 
     what_modal = "edit";
     currentEditRow = row;
+    add_list = row.dataset.list;
 
     document.getElementById("modal-delete-btn").style.display = "block";
 
@@ -256,3 +328,52 @@ document.addEventListener("click", (e)=> {
     openModal();
     e.stopPropagation();
 });
+
+// 데이터 불러오기
+async function loadTasks() {
+    const querySnapshot = await getDocs(collection(db, "tasks"));
+    querySnapshot.forEach((doc) => {
+        let data = doc.data();
+        let doTimeEl = document.getElementById("add-do-time");
+        let doTimeText = "";
+        for (let opt of doTimeEl.options) {
+            if (opt.value === data.doTime) {
+                doTimeText = opt.text;
+                break;
+            }
+        }
+
+        let innerHTML = `
+            <div class="col-fixed">
+                <div class="status-btn">
+                    <img src="./Asset/status/sta${data.status}.png" class="status-icon">
+                </div>
+                <div class="task-info">
+                    <span class="task-title">${data.title}</span>
+                    <span class="task-sub">${data.sub || ""}</span>
+                </div>
+            </div>
+            <div class="scroll-area">
+                <span class="col">${data.dueDate || ""}</span>
+                <span class="col"><span class="tagg ${priorityClass[data.priority]}">${priorityText[data.priority]}</span></span>
+                <span class="col">${data.doDate || ""}</span>
+                <span class="col"><span class="tagg ${dtimeclass[data.doTime]}">${doTimeText}</span></span>
+            </div>
+        `;
+
+        let newRow = document.createElement("div");
+        newRow.className = "table-row";
+        newRow.dataset.id = doc.id;
+        newRow.dataset.list = data.list;
+        newRow.innerHTML = innerHTML;
+
+        let addBtn = document.getElementById("add-btn-" + data.list);
+        if (addBtn) {
+            addBtn.parentNode.insertBefore(newRow, addBtn);
+        }
+    });
+
+    syncScrollAreas();
+}
+
+loadTasks();
