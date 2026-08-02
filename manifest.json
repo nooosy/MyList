@@ -7,7 +7,7 @@
     "theme_color": "#720eb4",
     "icons": [
         {
-            "src": "Asset/status/sta4.png",
+            "src": "Asset/icons/app_icon.png",
             "sizes": "500x500",
             "type": "image/png"
         }
