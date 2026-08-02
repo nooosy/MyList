@@ -56,7 +56,7 @@ function resetModal() {
 
 // 모달 열기
 function openModal() {
-    let deleteBtn = document.getElementById("modal-delete-btn");
+    let deleteBtn = document.getElementById("modal-d-btn");
     if (what_modal === "edit") {
         deleteBtn.style.visibility = "visible";
     } else {
@@ -223,7 +223,7 @@ document.getElementById("modal-ok-btn").addEventListener("click", async()=> {
     resetModal();
     currentEditRow = null;
     what_modal = "add";
-    document.getElementById("modal-delete-btn").style.display = "block";
+    document.getElementById("modal-d-btn").style.display = "block";
     closeModal();
 });
 
@@ -301,7 +301,7 @@ document.addEventListener("click", (e)=> {
     currentEditRow = row;
     add_list = row.dataset.list;
 
-    document.getElementById("modal-delete-btn").style.display = "block";
+    document.getElementById("modal-d-btn").style.display = "block";
 
     let title = row.querySelector(".task-title").textContent;
     let sub = row.querySelector(".task-sub")?.textContent || "";
