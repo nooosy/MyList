@@ -54,6 +54,9 @@ function resetModal() {
     document.getElementById("add-do-time").value = "1";
 }
 
+let modal_content = document.getElementById("modal-content");
+let modal_overlay = document.getElementById("add-task-modal");
+
 // 모달 열기
 function openModal() {
     let deleteBtn = document.getElementById("modal-d-btn");
@@ -69,9 +72,6 @@ function openModal() {
         modal_content.scrollTop = 0;
     });
 }
-
-let modal_content = document.getElementById("modal-content");
-let modal_overlay = document.getElementById("add-task-modal");
 
 // 모달 닫기
 function closeModal() {
