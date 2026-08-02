@@ -117,7 +117,7 @@ modal_overlay.addEventListener("click", ()=> {
 });
 
 // 삭제 버튼
-document.getElementById("modal-delete-btn").addEventListener("click", async (e)=> {
+document.getElementById("modal-d-btn").addEventListener("click", async (e)=> {
     e.stopPropagation();
     if (currentEditRow) {
         // Firestore에서 삭제
