@@ -41,161 +41,203 @@
 
         <main id="content">
 
-            <div class="hidden_height_box"> </div>
+            <div class="view" id="view-list">
+                <div class="hidden_height_box"> </div>
 
-            <!-- 수행평가 목록 -->
-            <div class="list-header">
-                <h2 class="listname">수행평가</h2>
-                <button class="filter-btn">⁝</button>
+                <!-- 수행평가 목록 -->
+                <div class="list-header">
+                    <h2 class="listname">수행평가</h2>
+                    <button class="filter-btn">⁝</button>
+                </div>
+
+                <div class="table-row header-row">
+                    <div class="col-fixed tititle">제목</div>
+                    <div class="scroll-area">
+                        <span class="col">Due date</span>
+                        <span class="col">Priority</span>
+                        <span class="col">Do date</span>
+                        <span class="col">Do time</span>
+                    </div>
+                </div>
+
+    <!--        <div class="table-row">
+                    <div class="col-fixed">
+                        <div class="status-btn">
+                            <img src="./Asset/status/sta0.png" class="status-icon">
+                        </div>
+                        <div class="task-info">
+                            <span class="task-title">제목</span>
+                            <span class="task-sub">과목</span>
+                        </div>
+                    </div>
+                    <div class="scroll-area">
+                        <span class="col">OOO 00</span>
+                        <span class="col">
+                            <span class="tagg T_p1">긴급</span>
+                        </span>
+                        <span class="col">OOO 00</span>
+                        <span class="col">
+                            <span class="tagg tt1">아침</span>
+                        </span>
+                    </div>
+                </div> -->
+
+                
+                <div class="table-row add-newrow" id="add-btn-sh">
+                    <div class="col-fixed">
+                        <div class="add-icon">
+                            <img src="./Asset/icons/plus_new.png" class="add-iconpic">
+                        </div>
+                        <div class="task-info">
+                            <span class="task-title">할 일 추가...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden_height_box"> </div>
+
+                <!-- 할 일 목록 -->
+                <div class="list-header">
+                    <h2 class="listname">할 일</h2>
+                    <button class="filter-btn">⁝</button>
+                </div>
+
+                <div class="table-row header-row">
+                    <div class="col-fixed tititle">제목</div>
+                    <div class="scroll-area">
+                        <span class="col">Due date</span>
+                        <span class="col">Priority</span>
+                        <span class="col">Do date</span>
+                        <span class="col">Do time</span>
+                    </div>
+                </div>
+
+                <!-- <div class="table-row">
+                    <div class="col-fixed">
+                        <div class="status-btn">
+                            <img src="./Asset/status/sta0.png" class="status-icon">
+                        </div>
+                        <div class="task-info">
+                            <span class="task-title">제목</span>
+                            <span class="task-sub">과목</span>
+                        </div>
+                    </div>
+                    <div class="scroll-area">
+                        <span class="col">OOO 00</span>
+                        <span class="col">
+                            <span class="tagg T_p1">긴급</span>
+                        </span>
+                        <span class="col">OOO 00</span>
+                        <span class="col">
+                            <span class="tagg tt1">아침</span>
+                        </span>
+                    </div>
+                </div> -->
+
+                <div class="table-row add-newrow" id="add-btn-hi">
+                    <div class="col-fixed">
+                        <div class="add-icon">
+                            <img src="./Asset/icons/plus_new.png" class="add-iconpic">
+                        </div>
+                        <div class="task-info">
+                            <span class="task-title">할 일 추가...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden_height_box"> </div>
+
+                <!-- 할 일 과제 -->
+                <div class="list-header">
+                    <h2>할 과제</h2>
+                    <button class="filter-btn">⁝</button>
+                </div>
+
+                <div class="table-row header-row">
+                    <div class="col-fixed tititle">제목</div>
+                    <div class="scroll-area">
+                        <span class="col">Due date</span>
+                        <span class="col">Priority</span>
+                        <span class="col">Do date</span>
+                        <span class="col">Do time</span>
+                    </div>
+                </div>
+
+                <!-- <div class="table-row">
+                    <div class="col-fixed">
+                        <div class="status-btn">
+                            <img src="./Asset/status/sta0.png" class="status-icon">
+                        </div>
+                        <div class="task-info">
+                            <span class="task-title">제목</span>
+                            <span class="task-sub">과목</span>
+                        </div>
+                    </div>
+                    <div class="scroll-area">
+                        <span class="col">OOO 00</span>
+                        <span class="col">
+                            <span class="tagg T_p1">긴급</span>
+                        </span>
+                        <span class="col">OOO 00</span>
+                        <span class="col">
+                            <span class="tagg tt1">아침</span>
+                        </span>
+                    </div>
+                </div> -->
+
+                <div class="table-row add-newrow" id="add-btn-hg">
+                    <div class="col-fixed">
+                        <div class="add-icon">
+                            <img src="./Asset/icons/plus_new.png" class="add-iconpic">
+                        </div>
+                        <div class="task-info">
+                            <span class="task-title">할 일 추가...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden_height_box"> </div>
             </div>
 
-            <div class="table-row header-row">
-                <div class="col-fixed tititle">제목</div>
-                <div class="scroll-area">
-                    <span class="col">Due date</span>
-                    <span class="col">Priority</span>
-                    <span class="col">Do date</span>
-                    <span class="col">Do time</span>
+            <div class="view" id="today-view">
+                    
+                <div class="hidden_height_box"> </div>
+    
+                <!-- 날짜 선택 바 -->
+                <div class="date-nav">
+                    <button class="date-arrow-btn" id="date-prev">
+                        <span>←</span>
+                    </button>
+                    <span class="date-label" id="current-date">2026.06.15</span>
+                    <button class="date-arrow-btn" id="date-next">
+                        <span>→</span>
+                    </button>
                 </div>
+
+                <div class="hidden_height_box"> </div>
+    
+                <!-- 오늘의 일정 목록 -->
+                <!-- <div class="list-header">
+                    <h2>할 과제</h2>
+                    <button class="filter-btn">⁝</button>
+                </div> -->
+
+                <div class="table-row header-row">
+                    <div class="col-fixed whattime">시간</div>
+                    <div class="col-fixed tititle">제목</div>
+                    <div class="scroll-area">
+                        <span class="col">Due date</span>
+                        <span class="col">Priority</span>
+                    </div>
+                </div>
+
+                <div id="today-task-list"></div>
+
+                <div class="hidden_height_box"> </div>
             </div>
-
-<!--        <div class="table-row">
-                <div class="col-fixed">
-                    <div class="status-btn">
-                        <img src="./Asset/status/sta0.png" class="status-icon">
-                    </div>
-                    <div class="task-info">
-                        <span class="task-title">제목</span>
-                        <span class="task-sub">과목</span>
-                    </div>
-                </div>
-                <div class="scroll-area">
-                    <span class="col">OOO 00</span>
-                    <span class="col">
-                        <span class="tagg T_p1">긴급</span>
-                    </span>
-                    <span class="col">OOO 00</span>
-                    <span class="col">
-                        <span class="tagg tt1">아침</span>
-                    </span>
-                </div>
-            </div> -->
-
-            
-            <div class="table-row add-newrow" id="add-btn-sh">
-                <div class="col-fixed">
-                    <div class="add-icon">
-                        <img src="./Asset/icons/plus_new.png" class="add-iconpic">
-                    </div>
-                    <div class="task-info">
-                        <span class="task-title">할 일 추가...</span>
-                    </div>
-                </div>
+    
+                <div class="hidden_height_box"> </div>
             </div>
-
-            <div class="hidden_height_box"> </div>
-
-            <!-- 할 일 목록 -->
-            <div class="list-header">
-                <h2 class="listname">할 일</h2>
-                <button class="filter-btn">⁝</button>
-            </div>
-
-            <div class="table-row header-row">
-                <div class="col-fixed tititle">제목</div>
-                <div class="scroll-area">
-                    <span class="col">Due date</span>
-                    <span class="col">Priority</span>
-                    <span class="col">Do date</span>
-                    <span class="col">Do time</span>
-                </div>
-            </div>
-
-            <!-- <div class="table-row">
-                <div class="col-fixed">
-                    <div class="status-btn">
-                        <img src="./Asset/status/sta0.png" class="status-icon">
-                    </div>
-                    <div class="task-info">
-                        <span class="task-title">제목</span>
-                        <span class="task-sub">과목</span>
-                    </div>
-                </div>
-                <div class="scroll-area">
-                    <span class="col">OOO 00</span>
-                    <span class="col">
-                        <span class="tagg T_p1">긴급</span>
-                    </span>
-                    <span class="col">OOO 00</span>
-                    <span class="col">
-                        <span class="tagg tt1">아침</span>
-                    </span>
-                </div>
-            </div> -->
-
-            <div class="table-row add-newrow" id="add-btn-hi">
-                <div class="col-fixed">
-                    <div class="add-icon">
-                        <img src="./Asset/icons/plus_new.png" class="add-iconpic">
-                    </div>
-                    <div class="task-info">
-                        <span class="task-title">할 일 추가...</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hidden_height_box"> </div>
-
-            <!-- 할 일 과제 -->
-            <div class="list-header">
-                <h2>할 과제</h2>
-                <button class="filter-btn">⁝</button>
-            </div>
-
-            <div class="table-row header-row">
-                <div class="col-fixed tititle">제목</div>
-                <div class="scroll-area">
-                    <span class="col">Due date</span>
-                    <span class="col">Priority</span>
-                    <span class="col">Do date</span>
-                    <span class="col">Do time</span>
-                </div>
-            </div>
-
-            <!-- <div class="table-row">
-                <div class="col-fixed">
-                    <div class="status-btn">
-                        <img src="./Asset/status/sta0.png" class="status-icon">
-                    </div>
-                    <div class="task-info">
-                        <span class="task-title">제목</span>
-                        <span class="task-sub">과목</span>
-                    </div>
-                </div>
-                <div class="scroll-area">
-                    <span class="col">OOO 00</span>
-                    <span class="col">
-                        <span class="tagg T_p1">긴급</span>
-                    </span>
-                    <span class="col">OOO 00</span>
-                    <span class="col">
-                        <span class="tagg tt1">아침</span>
-                    </span>
-                </div>
-            </div> -->
-
-            <div class="table-row add-newrow" id="add-btn-hg">
-                <div class="col-fixed">
-                    <div class="add-icon">
-                        <img src="./Asset/icons/plus_new.png" class="add-iconpic">
-                    </div>
-                    <div class="task-info">
-                        <span class="task-title">할 일 추가...</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hidden_height_box"> </div>
         </main>
     </div>
 

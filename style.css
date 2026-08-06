@@ -193,6 +193,30 @@ html, body {
     visibility: hidden; /* 일단 헤더의 '제목'은 숨김 */
 }
 
+.col-fixed.whattime {}
+
+
+.date-arrow-btn{
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    color:#363636;
+    margin: 10px;
+    font-size: 15pt;
+    /* border: 1px solid #d1d5db;
+    border-radius: 10px; */
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+}
+
+.date-label{
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 5px 20px 5px 20px;
+    cursor: pointer;
+}
+
 .scroll-area::-webkit-scrollbar {
     display: none;                /* Chrome, Safari, 최신 Edge */
 }
@@ -209,6 +233,26 @@ html, body {
     display: flex;
     flex-direction: column;
     cursor: pointer;
+}
+
+.col-fixed.today-col {
+    padding: 3px 8px;
+}
+
+.whattime-text {
+    font-size: 13px;
+    font-weight: 500;
+    background-color: #fffc9c;
+    border-radius: 20px;
+    padding: 5px 15px 5px 15px;
+    margin: 10px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    width: 70px;
+    box-sizing: border-box;
+    justify-content: center
 }
 
 .task-title {
@@ -520,5 +564,5 @@ input[type="date"]:focus, select:focus {
     border-right: none;
     font-size: 20px;
     margin: 0 0 10px 0;
-    }
+    }  
 }

@@ -18,6 +18,9 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+let currentViewDate = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD" 형식
+let allTasks = []; // Firestore에서 불러온 모든 task 저장 (today-view용)
+
 //사이드바 열고 닫기
 let sidebar = document.getElementById("sidebar");
 let overlay = document.getElementById("overlay");
@@ -334,6 +337,8 @@ async function loadTasks() {
     const querySnapshot = await getDocs(collection(db, "tasks"));
     querySnapshot.forEach((doc) => {
         let data = doc.data();
+        data.id = doc.id; // 나중에 수정/삭제할 때 필요하니까 id도 같이 저장
+        allTasks.push(data);
         let doTimeEl = document.getElementById("add-do-time");
         let doTimeText = "";
         for (let opt of doTimeEl.options) {
@@ -374,6 +379,69 @@ async function loadTasks() {
     });
 
     syncScrollAreas();
+    document.getElementById("current-date").textContent = currentViewDate;
+    renderTodayView(currentViewDate);
 }
 
 loadTasks();
+
+document.getElementById("date-prev").addEventListener("click", () => {
+    let d = new Date(currentViewDate);
+    d.setDate(d.getDate() - 1);
+    currentViewDate = d.toISOString().split("T")[0];
+    document.getElementById("current-date").textContent = currentViewDate;
+    renderTodayView(currentViewDate);
+});
+
+document.getElementById("date-next").addEventListener("click", () => {
+    let d = new Date(currentViewDate);
+    d.setDate(d.getDate() + 1);
+    currentViewDate = d.toISOString().split("T")[0];
+    document.getElementById("current-date").textContent = currentViewDate;
+    renderTodayView(currentViewDate);
+});
+
+function renderTodayView(dateStr) {
+    let container = document.getElementById("today-task-list");
+    container.innerHTML = "";
+
+    let timeLabels = { "1":"아침","2":"1~4교시","3":"점심","4":"5~7교시","5":"89교시","6":"저녁","7":"야간1","8":"야간2","9":"야간3","10":"심야" };
+
+    for (let t = 1; t <= 10; t++) {
+        let timeKey = String(t);
+        let task = allTasks.find(x => x.doDate === dateStr && x.doTime === timeKey);
+
+        let row = document.createElement("div");
+        row.className = "table-row";
+
+        if (task) {
+            row.dataset.id = task.id;
+            row.dataset.list = task.list;
+            row.innerHTML = `
+                <div class="col-fixed today-col">
+                    <span class="whattime-text ${dtimeclass[timeKey]}">${timeLabels[timeKey]}</span>
+                    <div class="status-btn">
+                        <img src="./Asset/status/sta${task.status}.png" class="status-icon">
+                    </div>
+                    <div class="task-info">
+                        <span class="task-title">${task.title}</span>
+                        <span class="task-sub">${task.sub || ""}</span>
+                    </div>
+                </div>
+                <div class="scroll-area">
+                    <span class="col">${task.dueDate || ""}</span>
+                    <span class="col"><span class="tagg ${priorityClass[task.priority]}">${priorityText[task.priority]}</span></span>
+                </div>
+            `;
+        } else {
+            row.innerHTML = `
+                <div class="col-fixed today-col">
+                    <span class="whattime-text ${dtimeclass[timeKey]}">${timeLabels[timeKey]}</span>
+                    <span class="task-select-btn" data-time="${timeKey}">할 일 선택</span>
+                </div>
+            `;
+        }
+
+        container.appendChild(row);
+    }
+}
