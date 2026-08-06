@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyD8hyrOqYdoEAEur_0x6jRoi-vLn5zx2ds",
@@ -14,12 +14,15 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-
 const db = getFirestore(app);
+
+const auth = getAuth(app);
+signInAnonymously(auth).catch((e) => console.error("익명 로그인 실패:", e));
 
 let currentViewDate = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD" 형식
 let allTasks = []; // Firestore에서 불러온 모든 task 저장 (today-view용)
+
+let currentTodayTime = null; // 지금 "할 일 선택" 누른 시간대(doTime) 기억
 
 //사이드바 열고 닫기
 let sidebar = document.getElementById("sidebar");
@@ -385,6 +388,49 @@ async function loadTasks() {
 
 loadTasks();
 
+let todaySelectPopup = document.getElementById("today-select-popup");
+
+document.addEventListener("click", (e) => {
+    let btn = e.target.closest(".task-select-btn");
+    if (btn) {
+        currentTodayTime = btn.dataset.time;
+        let rect = btn.getBoundingClientRect();
+        todaySelectPopup.style.top = (rect.bottom + 8) + "px";
+        todaySelectPopup.style.left = rect.left + "px";
+        todaySelectPopup.classList.add("open");
+        e.stopPropagation();
+        return;
+    }
+    todaySelectPopup.classList.remove("open");
+});
+
+document.getElementById("today-memo-btn").addEventListener("click", async () => {
+    todaySelectPopup.classList.remove("open");
+    let memoText = prompt("메모를 입력하세요");
+    if (!memoText) return;
+
+    const memoData = {
+        title: memoText,
+        sub: "",
+        dueDate: "",
+        priority: "",
+        doDate: currentViewDate,
+        doTime: currentTodayTime,
+        status: "",
+        list: "memo"
+    };
+
+    try {
+        const docRef = await addDoc(collection(db, "tasks"), memoData);
+        memoData.id = docRef.id;
+        allTasks.push(memoData);
+        renderTodayView(currentViewDate);
+        console.log("메모 저장됨:", docRef.id);
+    } catch (e) {
+        console.error("메모 저장 실패:", e);
+    }
+});
+
 document.getElementById("date-prev").addEventListener("click", () => {
     let d = new Date(currentViewDate);
     d.setDate(d.getDate() - 1);
@@ -432,11 +478,12 @@ function renderTodayView(dateStr) {
                     <span class="col">${task.dueDate || ""}</span>
                     <span class="col"><span class="tagg ${priorityClass[task.priority]}">${priorityText[task.priority]}</span></span>
                 </div>
-            `;
-        } else {
+            `;}
+        else {
+            row.classList.add("today-empty");
             row.innerHTML = `
                 <div class="col-fixed today-col">
-                    <span class="whattime-text ${dtimeclass[timeKey]}">${timeLabels[timeKey]}</span>
+                    <span class="whattime-text tt${timeKey}">${timeLabels[timeKey]}</span>
                     <span class="task-select-btn" data-time="${timeKey}">할 일 선택</span>
                 </div>
             `;

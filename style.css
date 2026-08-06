@@ -265,6 +265,20 @@ html, body {
     color: #888;
 }
 
+.task-select-btn{
+    cursor: pointer;
+    color: #9c9c9c;
+    font-size: 13px;
+}
+
+.table-row.today-empty {
+    opacity: 0.5;
+}
+
+.table-row.today-empty .whattime-text {
+    background-color: #d9d9d9 !important;
+}
+
 h2 listname{
     margin: 60px 0px 0px 0px;
 }
@@ -433,6 +447,20 @@ input[type="date"]:focus, select:focus {
 .status-option img {
     width: 20px;
     height: 20px;
+}
+
+#today-select-popup {
+    position: fixed;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    padding: 8px;
+    z-index: 900;
+    display: none;
+}
+
+#today-select-popup.open {
+    display: block;
 }
 
 /* iPad 11" 이상 */
