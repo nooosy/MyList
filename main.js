@@ -19,10 +19,20 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 signInAnonymously(auth).catch((e) => console.error("익명 로그인 실패:", e));
 
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        loadTasks();
+    }
+});
+
 let currentViewDate = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD" 형식
 let allTasks = []; // Firestore에서 불러온 모든 task 저장 (today-view용)
+window.allTasks = allTasks;
+console.log("로드된 tasks:", allTasks);
+
 
 let currentTodayTime = null; // 지금 "할 일 선택" 누른 시간대(doTime) 기억
+let modalMode = "form"; // "form" 또는 "pick"
 
 //사이드바 열고 닫기
 let sidebar = document.getElementById("sidebar");
@@ -117,6 +127,11 @@ modal_overlay.addEventListener("click", ()=> {
     if (what_modal === "edit") {
         resetModal();
         currentEditRow = null;
+    }
+    if (modalMode === "pick") {
+        modalMode = "form";
+        document.getElementById("modal-form-area").style.display = "block";
+        document.getElementById("today-pick-list").classList.remove("open");
     }
     what_modal = "add";
     closeModal();
@@ -302,6 +317,9 @@ document.addEventListener("click", (e)=> {
 
     let row = taskInfo.closest(".table-row");
     if (!row || row.classList.contains("add-newrow")) return;
+    if (row.closest("#today-view")) return;
+
+    what_modal = "edit";
 
     what_modal = "edit";
     currentEditRow = row;
@@ -386,9 +404,68 @@ async function loadTasks() {
     renderTodayView(currentViewDate);
 }
 
-loadTasks();
-
 let todaySelectPopup = document.getElementById("today-select-popup");
+
+document.getElementById("today-task-btn").addEventListener("click", () => {
+    todaySelectPopup.classList.remove("open");
+    openPickModal();
+});
+
+function openPickModal() {
+    modalMode = "pick";
+    document.getElementById("modal-form-area").style.display = "none";
+    let pickList = document.getElementById("today-pick-list");
+    pickList.classList.add("open");
+    pickList.innerHTML = "";
+
+    let unassigned = allTasks.filter(t => !t.doDate && !t.doTime && t.list !== "memo");
+
+    if (unassigned.length === 0) {
+        pickList.innerHTML = `<p style="padding:14px 8px; color:#888;">할 일이 없어요. 할 일을 추가해 보세요!</p>`;
+    } else {
+        unassigned.forEach(task => {
+            let item = document.createElement("div");
+            item.className = "pick-item";
+            item.textContent = task.title;
+            item.dataset.id = task.id;
+            pickList.appendChild(item);
+        });
+    }
+
+    openModal();
+}
+
+document.getElementById("today-pick-list").addEventListener("click", async (e) => {
+    let item = e.target.closest(".pick-item");
+    if (!item) return;
+
+    let taskId = item.dataset.id;
+    let task = allTasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    task.doDate = currentViewDate;
+    task.doTime = currentTodayTime;
+
+    try {
+        await updateDoc(doc(db, "tasks", taskId), {
+            doDate: currentViewDate,
+            doTime: currentTodayTime
+        });
+        console.log("배정됨!");
+    } catch (err) {
+        console.error("배정 실패:", err);
+    }
+
+    renderTodayView(currentViewDate);
+    closePickModal();
+});
+
+function closePickModal() {
+    modalMode = "form";
+    document.getElementById("modal-form-area").style.display = "block";
+    document.getElementById("today-pick-list").classList.remove("open");
+    closeModal();
+}
 
 document.addEventListener("click", (e) => {
     let btn = e.target.closest(".task-select-btn");
@@ -461,33 +538,45 @@ function renderTodayView(dateStr) {
         row.className = "table-row";
 
         if (task) {
-            row.dataset.id = task.id;
-            row.dataset.list = task.list;
-            row.innerHTML = `
-                <div class="col-fixed today-col">
-                    <span class="whattime-text ${dtimeclass[timeKey]}">${timeLabels[timeKey]}</span>
-                    <div class="status-btn">
-                        <img src="./Asset/status/sta${task.status}.png" class="status-icon">
-                    </div>
-                    <div class="task-info">
-                        <span class="task-title">${task.title}</span>
-                        <span class="task-sub">${task.sub || ""}</span>
-                    </div>
-                </div>
-                <div class="scroll-area">
-                    <span class="col">${task.dueDate || ""}</span>
-                    <span class="col"><span class="tagg ${priorityClass[task.priority]}">${priorityText[task.priority]}</span></span>
-                </div>
-            `;}
-        else {
-            row.classList.add("today-empty");
-            row.innerHTML = `
-                <div class="col-fixed today-col">
-                    <span class="whattime-text tt${timeKey}">${timeLabels[timeKey]}</span>
-                    <span class="task-select-btn" data-time="${timeKey}">할 일 선택</span>
-                </div>
-            `;
-        }
+                    row.dataset.id = task.id;
+                    row.dataset.list = task.list;
+
+                    if (task.list === "memo") {
+                        row.innerHTML = `
+                            <div class="col-fixed today-col">
+                                <span class="whattime-text ${dtimeclass[timeKey]}">${timeLabels[timeKey]}</span>
+                                <div class="task-info">
+                                    <span class="task-title">${task.title}</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        row.innerHTML = `
+                            <div class="col-fixed today-col">
+                                <span class="whattime-text ${dtimeclass[timeKey]}">${timeLabels[timeKey]}</span>
+                                <div class="status-btn">
+                                    <img src="./Asset/status/sta${task.status}.png" class="status-icon">
+                                </div>
+                                <div class="task-info">
+                                    <span class="task-title">${task.title}</span>
+                                    <span class="task-sub">${task.sub || ""}</span>
+                                </div>
+                            </div>
+                            <div class="scroll-area">
+                                <span class="col">${task.dueDate || ""}</span>
+                                <span class="col"><span class="tagg ${priorityClass[task.priority]}">${priorityText[task.priority]}</span></span>
+                            </div>
+                        `;
+                    }
+                } else {
+                    row.classList.add("today-empty");
+                    row.innerHTML = `
+                        <div class="col-fixed today-col">
+                            <span class="whattime-text ${dtimeclass[timeKey]}">${timeLabels[timeKey]}</span>
+                            <span class="task-select-btn" data-time="${timeKey}">할 일 선택</span>
+                        </div>
+                    `;
+                }
 
         container.appendChild(row);
     }

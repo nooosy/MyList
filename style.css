@@ -463,6 +463,24 @@ input[type="date"]:focus, select:focus {
     display: block;
 }
 
+#today-pick-list {
+    display: none;
+}
+
+#today-pick-list.open {
+    display: block;
+}
+
+.pick-item {
+    padding: 14px 8px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.pick-item:hover {
+    background: #f5f5f5;
+}
+
 /* iPad 11" 이상 */
 @media (min-width:820px){
 

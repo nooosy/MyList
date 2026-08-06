@@ -243,37 +243,40 @@
 
     <div id="add-task-modal">
         <div id="modal-content">
-            <input type="text" id="add-task-name" placeholder="할 일 제목" value="" maxlength="20" required>
-            <div id="modal-left">
-                <h4>Subject</h4>
-                <input type="text" id="add-task-sub" placeholder="과목" maxlength="10">
-                <h4>Due Date</h4>
-                <input type="date" id="add-due-date" value="" required>
-                <h4>Priority</h4>
-                <select id="add-priority">
-                    <option value="1">긴급</option>
-                    <option value="2">높음</option>
-                    <option value="3">중간</option>
-                    <option value="4">보통</option>
-                </select>
-                <h4>Do date</h4>
-                <input type="date" id="add-do-date" value="" required>
-                <h4>Do Time</h4>
-                <select id="add-do-time">
-                    <option value="1">아침</option>
-                    <option value="2">1~4교시</option>
-                    <option value="3">점심</option>
-                    <option value="4">5~7교시</option>
-                    <option value="5">89교시</option>
-                    <option value="6">저녁</option>
-                    <option value="7">야간1</option>
-                    <option value="8">야간2</option>
-                    <option value="9">야간3</option>
-                    <option value="10">심야</option>
-                </select>
+            <div id="modal-form-area">
+                <input type="text" id="add-task-name" placeholder="할 일 제목" value="" maxlength="20" required>
+                <div id="modal-left">
+                    <h4>Subject</h4>
+                    <input type="text" id="add-task-sub" placeholder="과목" maxlength="10">
+                    <h4>Due Date</h4>
+                    <input type="date" id="add-due-date" value="" required>
+                    <h4>Priority</h4>
+                    <select id="add-priority">
+                        <option value="1">긴급</option>
+                        <option value="2">높음</option>
+                        <option value="3">중간</option>
+                        <option value="4">보통</option>
+                    </select>
+                    <h4>Do date</h4>
+                    <input type="date" id="add-do-date" value="" required>
+                    <h4>Do Time</h4>
+                    <select id="add-do-time">
+                        <option value="1">아침</option>
+                        <option value="2">1~4교시</option>
+                        <option value="3">점심</option>
+                        <option value="4">5~7교시</option>
+                        <option value="5">89교시</option>
+                        <option value="6">저녁</option>
+                        <option value="7">야간1</option>
+                        <option value="8">야간2</option>
+                        <option value="9">야간3</option>
+                        <option value="10">심야</option>
+                    </select>
+                </div>
+                <button id="modal-ok-btn">완료</button>
+                <button id="modal-d-btn">삭제하기</button>
             </div>
-            <button id="modal-ok-btn">완료</button>
-            <button id="modal-d-btn">삭제하기</button>
+            <div id="today-pick-list"></div>
         </div>
     </div>
 
