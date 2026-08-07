@@ -208,6 +208,7 @@
                     <button class="date-arrow-btn" id="date-prev">
                         <span>←</span>
                     </button>
+                    <input type="date" id="date-picker-input" style="display:none;">
                     <span class="date-label" id="current-date">2026.06.15</span>
                     <button class="date-arrow-btn" id="date-next">
                         <span>→</span>
@@ -225,10 +226,10 @@
                 <div class="table-row header-row">
                     <div class="col-fixed whattime">시간</div>
                     <div class="col-fixed tititle">제목</div>
-                    <div class="scroll-area">
+                    <!-- <div class="scroll-area">
                         <span class="col">Due date</span>
                         <span class="col">Priority</span>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div id="today-task-list"></div>
@@ -241,6 +242,7 @@
         </main>
     </div>
 
+    
     <div id="add-task-modal">
         <div id="modal-content">
             <div id="modal-form-area">
@@ -252,6 +254,7 @@
                     <input type="date" id="add-due-date" value="" required>
                     <h4>Priority</h4>
                     <select id="add-priority">
+                        <option value="">미정</option>
                         <option value="1">긴급</option>
                         <option value="2">높음</option>
                         <option value="3">중간</option>
@@ -261,6 +264,7 @@
                     <input type="date" id="add-do-date" value="" required>
                     <h4>Do Time</h4>
                     <select id="add-do-time">
+                        <option value="">미정</option>
                         <option value="1">아침</option>
                         <option value="2">1~4교시</option>
                         <option value="3">점심</option>

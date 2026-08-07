@@ -56,18 +56,18 @@ let currentEditRow = null;
 let syncing = false;
 let scrollAreasSynced = false; // 스크롤 리스너 중복 등록 방지 플래그
 
-const priorityText = { "1":"긴급", "2":"높음", "3":"중간", "4":"보통" };
-const priorityClass = { "1":"T_p1", "2":"T_p2", "3":"T_p3", "4":"T_p4" };
-const dtimeclass = { "1":"tt1", "2":"tt2", "3":"tt3", "4":"tt4", "5":"tt5", "6":"tt6", "7":"tt7", "8":"tt8", "9":"tt9", "10":"tt10" };
+const priorityText = { "":"미정","1":"긴급", "2":"높음", "3":"중간", "4":"보통" };
+const priorityClass = { "":"T_p0","1":"T_p1", "2":"T_p2", "3":"T_p3", "4":"T_p4" };
+const dtimeclass = { "":"tt0","1":"tt1", "2":"tt2", "3":"tt3", "4":"tt4", "5":"tt5", "6":"tt6", "7":"tt7", "8":"tt8", "9":"tt9", "10":"tt10" };
 
 // 모달 초기화
 function resetModal() {
     document.getElementById("add-task-name").value = "";
     document.getElementById("add-task-sub").value = "";
     document.getElementById("add-due-date").value = "";
-    document.getElementById("add-priority").value = "1";
+    document.getElementById("add-priority").value = "";
     document.getElementById("add-do-date").value = "";
-    document.getElementById("add-do-time").value = "1";
+    document.getElementById("add-do-time").value = "";
 }
 
 let modal_content = document.getElementById("modal-content");
@@ -418,8 +418,7 @@ function openPickModal() {
     pickList.classList.add("open");
     pickList.innerHTML = "";
 
-    let unassigned = allTasks.filter(t => !t.doDate && !t.doTime && t.list !== "memo");
-
+    let unassigned = allTasks.filter(t => !t.doTime && t.list !== "memo");
     if (unassigned.length === 0) {
         pickList.innerHTML = `<p style="padding:14px 8px; color:#888;">할 일이 없어요. 할 일을 추가해 보세요!</p>`;
     } else {
@@ -458,6 +457,19 @@ document.getElementById("today-pick-list").addEventListener("click", async (e) =
 
     renderTodayView(currentViewDate);
     closePickModal();
+});
+
+let datePickerInput = document.getElementById("date-picker-input");
+
+document.getElementById("current-date").addEventListener("click", () => {
+    datePickerInput.value = currentViewDate;
+    datePickerInput.showPicker();
+});
+
+datePickerInput.addEventListener("change", () => {
+    currentViewDate = datePickerInput.value;
+    document.getElementById("current-date").textContent = currentViewDate;
+    renderTodayView(currentViewDate);
 });
 
 function closePickModal() {
@@ -561,10 +573,6 @@ function renderTodayView(dateStr) {
                                     <span class="task-title">${task.title}</span>
                                     <span class="task-sub">${task.sub || ""}</span>
                                 </div>
-                            </div>
-                            <div class="scroll-area">
-                                <span class="col">${task.dueDate || ""}</span>
-                                <span class="col"><span class="tagg ${priorityClass[task.priority]}">${priorityText[task.priority]}</span></span>
                             </div>
                         `;
                     }

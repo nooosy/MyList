@@ -295,11 +295,13 @@ h2 listname{
     width: fit-content;
 }
 
+.T_p0 { background-color: #cecece}
 .T_p1 { background-color: #E53E3E; color: white;}
 .T_p2 { background-color: #E67E22; color: white;}
 .T_p3 { background-color: #F6C90E;}
 .T_p4 { background-color: #3498DB; color: white;}
 
+.tt0 { background-color: #cecece}
 .tt1 { background-color: #fffc9c; }
 .tt2 { background-color: #e4ff9c; }
 .tt3 { background-color: #acff9c; }
@@ -480,6 +482,8 @@ input[type="date"]:focus, select:focus {
 .pick-item:hover {
     background: #f5f5f5;
 }
+
+
 
 /* iPad 11" 이상 */
 @media (min-width:820px){
