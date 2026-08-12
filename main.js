@@ -459,6 +459,24 @@ document.getElementById("today-pick-list").addEventListener("click", async (e) =
     closePickModal();
 });
 
+document.getElementById("nav-today").addEventListener("click", () => {
+    document.getElementById("view-list").style.display = "none";
+    document.getElementById("today-view").style.display = "block";
+    document.getElementById("content").scrollTop = 0;
+    window.scrollTo(0, 0);
+    sidebar.classList.remove("open");
+    overlay.classList.remove("open");
+});
+
+document.getElementById("nav-list").addEventListener("click", () => {
+    document.getElementById("today-view").style.display = "none";
+    document.getElementById("view-list").style.display = "block";
+    document.getElementById("content").scrollTop = 0;
+    window.scrollTo(0, 0);
+    sidebar.classList.remove("open");
+    overlay.classList.remove("open");
+});
+
 let datePickerInput = document.getElementById("date-picker-input");
 
 document.getElementById("current-date").addEventListener("click", () => {

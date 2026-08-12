@@ -483,7 +483,13 @@ input[type="date"]:focus, select:focus {
     background: #f5f5f5;
 }
 
+#today-view {
+    display: none;
+}
 
+.clikable {
+    cursor: pointer;
+}
 
 /* iPad 11" 이상 */
 @media (min-width:820px){
