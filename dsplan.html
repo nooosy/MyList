@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style1.css">
+  <link rel="icon" href="Asset/icons/fabicon.ico">
+  <title>나의 할 일 - The Death Star Plan</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+
+
+<body>
+  <div class="DS-app">
+    <!-- Header -->
+    <div class="DS-header">
+      <button id="hamburger">☰</button>
+      <span class="DS-header-title">The Death Star Plan</span>
+    </div>
+
+    <!-- main card-->
+    <span class="DS-now-bigplan-title">안녕하세욤</span>
+    <span class="DS-bigplan-dday">D-00</span>
+    <img src=".\Asset\icons\pencil_icon.png" id="bigplan-edit-btn">
+
+    <div class="progress-bar-track">
+      <div class="DS-progress-bar-fill" style="width: 21%;"></div>  <!-- 주) 임의로 일단 21%넣음. 나중에 style 속성 삭제하기. -->
+    </div>
+
+    <!-- content -->
+    <div class="DS-content">
+
+    <div class="DS-subject-card">
+        <div class="DS-subject-header">
+            <div class="DS-progress">
+                <svg viewBox="0 0 100 100">
+                    <circle class="DS-progress-bg" cx="50" cy="50" r="40"></circle>
+                    <circle class="DS-progress-fill" cx="50" cy="50" r="40"></circle>
+                </svg>
+                <span class="DS-progress-text">21%</span>
+            </div>
+            <div class="DS-subject-title-area">
+                <h3 class="DS-subject-title">과목명</h3>
+                <span class="DS-subject-sub">간단한 메모</span>
+            </div>
+            <button class="DS-expand-btn">❭</button>
+        </div>
+        <div class="DS-subject-body">
+            <!-- 항목들 여기 들어감 -->
+        </div>
+    </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
