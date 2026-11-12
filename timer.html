@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Timer</title>
+<style>
+/* ===== 사이드바·헤더: style.css(index.html)에서 그대로 복사 ===== */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+
+#overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+
+    z-index: 890;
+}
+
+#overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+#sidebar {
+    position: fixed;
+    width: 230px;
+    height: 100%;
+    background: #ffffff;
+    color: #141B34;
+    padding: 16px;
+
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+
+    z-index: 900;
+
+}
+
+#sidebar.open {
+    transform: translateX(0);
+}
+
+#mobile-header{
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    background: #ffffff;
+    color: #363636;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    z-index: 1000;          
+}
+
+#hamburger{
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    border: none;
+    margin: 10px;
+}
+
+
+
+.clikable {
+    cursor: pointer;
+}
+/* iPad 11" 이상 */
+@media (min-width:820px){
+
+    html, body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    }
+
+    #app {
+    display: flex;
+    height: calc(100vh - 70px);
+    }
+
+    #mobile-header{
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 70px;
+        background: #ffffff;
+        color: #363636;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        z-index: 1000;
+
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);          
+    }
+
+    #sidebar {
+        position: sticky;
+        width: 18vw;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: #ffffff;
+        color: #141B34;
+        padding: 16px;
+        transform: translateX(0px);
+        
+        box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.1), 
+                    4px 0 4px -1px rgba(0, 0, 0, 0.06); 
+    }
+
+    #content{
+        flex:1 ;
+        overflow-y: auto ;
+        width: 82vw;
+        min-height: 0;
+        padding: 0 0 50px 50px;
+    }
+
+    #hamburger{
+        visibility: hidden;
+        width: 0;
+    }
+
+    }
+
+/* ===== 타이머 ===== */
+  #content *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow:hidden}
+  #content{position:relative;height:calc(100dvh - 70px);overflow:hidden;background:#000;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
+  #content *{user-select:none;-webkit-user-select:none}
+  @media (min-width:820px){ #content{padding:0;width:auto} }
+  #stage{position:absolute;left:50%;top:50%;width:1024px;height:727px;transform-origin:center center;background:#000}
+
+  /* 바 */
+  #bar{position:absolute;left:210px;top:97px;width:22px;height:538px;
+    background:linear-gradient(to bottom,#3FA5FF,#0E092F)}
+  .scale{position:absolute;left:235px;color:#fff;font-size:12px;font-weight:700;line-height:1;transform:translateY(-50%)}
+  #sTop{top:104px} #sMid{top:357px} #sBot{top:627px}
+
+  /* 분홍 원 */
+  #knob{position:absolute;left:206px;top:0;width:31px;height:31px;border-radius:50%;
+    background:linear-gradient(to bottom,#FFBBBB,#8B6767);transform:translateY(-50%)}
+
+  /* 가운데 */
+  #remain{position:absolute;left:551px;top:315px;transform:translate(-50%,-50%);
+    color:#fff;font-size:46px;font-weight:800;letter-spacing:0.5px;font-variant-numeric:tabular-nums}
+  .clock{position:absolute;color:#B3B3B3;font-size:13px;font-weight:700;transform:translate(-50%,-50%);font-variant-numeric:tabular-nums}
+  #startAt{left:476px;top:356px} #endAt{left:641px;top:354px}
+
+  /* 버튼 */
+  .add{position:absolute;top:575px;width:114px;height:60px;border:3px solid #fff;border-radius:18px;
+    background:#000;color:#fff;font-size:21px;font-weight:700;cursor:pointer;font-family:inherit}
+  .add:active{background:#1a1a1a}
+  #a1,#m1{left:343px} #a5,#m5{left:487px} #a10,#m10{left:631px}
+  #a1,#a5,#a10{top:500px}
+  .minus{top:575px}
+
+  /* 시작/정지 */
+  #ctrl{position:absolute;left:784px;top:541.5px;width:52px;height:52px}
+  /* 평소엔 틈 없는 원으로 덮기 */
+  #ctrlFill{position:absolute;left:0;top:0;width:52px;height:52px;border-radius:50%;background:#E0E0E0;pointer-events:none;transition:opacity .12s}
+  #ctrl.paused #ctrlFill{opacity:0}
+  #topHalf{height:27px}
+
+  /* ===== 모바일(세로) 레이아웃 ===== */
+  #stage.mobile{width:430px;height:780px}
+  .mobile #bar{left:40px;top:90px;height:600px}
+  .mobile .scale{left:65px}
+  .mobile #sTop{top:97px} .mobile #sMid{top:390px} .mobile #sBot{top:682px}
+  .mobile #knob{left:36px}
+  .mobile #remain{left:255px;top:290px}
+  .mobile #startAt{left:185px;top:335px} .mobile #endAt{left:325px;top:335px}
+  .mobile .add{width:92px;height:56px;font-size:20px}
+  .mobile #a1,.mobile #m1{left:110px} .mobile #a5,.mobile #m5{left:214px} .mobile #a10,.mobile #m10{left:318px}
+  .mobile #a1,.mobile #a5,.mobile #a10{top:566px}
+  .mobile .minus{top:634px}
+  .mobile #ctrl{left:229px;top:470px}
+  .half{position:absolute;left:0;width:52px;height:26px;background:#E0E0E0;cursor:pointer;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+  #topHalf{top:0;border-radius:26px 26px 0 0}
+  #botHalf{top:26px;border-radius:0 0 26px 26px}
+  #ctrl.paused #topHalf{transform:translateY(-6px)}
+  #ctrl.paused #botHalf{transform:translateY(6px)}
+  #playIcon{position:absolute;left:21px;top:16px;width:0;height:0;pointer-events:none;
+    border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:16px solid #111;transition:opacity .2s}
+  #ctrl.paused #playIcon{opacity:0}
+  .mini{position:absolute;pointer-events:none;opacity:0;transition:opacity .25s,transform .35s cubic-bezier(.34,1.56,.64,1)}
+  #ctrl.paused .mini{opacity:1}
+  #miniPlay{left:22px;top:8px;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:10px solid #111}
+  #ctrl.paused #miniPlay{transform:translateY(-6px)}
+  #miniReset{left:20px;top:31px;width:12px;height:12px;border-radius:2px;background:#111}
+  #ctrl.paused #miniReset{transform:translateY(6px)}
+</style>
+</head>
+<body>
+<header id="mobile-header">
+        <button id="hamburger">☰</button>
+        <h3>타이머</h3>
+    </header>
+
+    <div id="app">
+
+        <!-- 사이드바 -->
+        <div id="overlay"></div>
+
+        <aside id="sidebar">
+            <h2 class="sidebar-menu">일정</h2>
+            <nav>
+                <ul>
+                    <li id="nav-today" class="sidebar-menu clikable">오늘의 일정</li>
+                </ul>
+            </nav>
+            <h2 class="sidebar-menu">갤럭시</h2>
+            <nav>
+                <ul>
+                    <li id="nav-list" class="sidebar-menu clikable">할 일</li>
+                    <li id="DSplan"class="sidebar-menu clikable">The Death Star Plan</li>
+                </ul>
+            </nav>
+            <h2 class="sidebar-menu">추가 기능</h2>
+            <nav>
+                <ul>
+                    <li id="nav-timer" class="sidebar-menu clikable">타이머</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main id="content">
+<div id="stage">
+  <div id="bar"></div>
+  <div class="scale" id="sTop">00:00</div>
+  <div class="scale" id="sMid">00:00</div>
+  <div class="scale" id="sBot">00:00</div>
+  <div id="knob"></div>
+
+  <div id="remain">00:00</div>
+  <div class="clock" id="startAt">--:--</div>
+  <div class="clock" id="endAt">--:--</div>
+
+  <button class="add" id="a1" data-m="1">+1</button>
+  <button class="add" id="a5" data-m="5">+5</button>
+  <button class="add" id="a10" data-m="10">+10</button>
+  <button class="add minus" id="m1" data-m="-1">-1</button>
+  <button class="add minus" id="m5" data-m="-5">-5</button>
+  <button class="add minus" id="m10" data-m="-10">-10</button>
+
+  <div id="ctrl">
+    <div class="half" id="topHalf"></div>
+    <div class="half" id="botHalf"></div>
+    <div id="ctrlFill"></div>
+    <div id="playIcon"></div>
+    <div class="mini" id="miniPlay"></div>
+    <div class="mini" id="miniReset"></div>
+  </div>
+</div>
+        </main>
+    </div>
+
+<script>
+// ===== 사이드바 (index.html과 동일 동작) =====
+const sidebar=document.getElementById("sidebar"), overlay=document.getElementById("overlay");
+document.getElementById("hamburger").addEventListener("click",()=>{sidebar.classList.toggle("open");overlay.classList.toggle("open");});
+overlay.addEventListener("click",()=>{sidebar.classList.remove("open");overlay.classList.remove("open");});
+document.getElementById("nav-today").addEventListener("click",()=>{location.href="index.html?view=today";});
+document.getElementById("nav-list").addEventListener("click",()=>{location.href="index.html?view=list";});
+document.getElementById("DSplan").addEventListener("click",()=>{location.href="dsplan.html";});
+document.getElementById("nav-timer").addEventListener("click",()=>{sidebar.classList.remove("open");overlay.classList.remove("open");});
+
+// ===== 화면 비율 유지하며 맞추기 (타이머 영역 기준) =====
+const stage=document.getElementById('stage');
+function fit(){const c=document.getElementById('content');const cw=c.clientWidth,ch=c.clientHeight;const m=cw/ch<0.85;stage.classList.toggle('mobile',m);
+  const W=m?430:1024,H=m?780:727;const s=Math.min(cw/W,ch/H);stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+addEventListener('resize',fit);fit();
+
+// ===== 상태 =====
+let BAR_TOP=97, BAR_H=538;
+let state='idle';        // idle | running | paused | alarm
+let totalMs=0;           // 바 스케일 = 설정한 전체 시간
+let remainMs=0;          // 남은 시간 (일시정지/대기 시)
+let endTime=0;           // 실행 중 종료 시각(ms)
+let startClock=null;     // 시작 시각(Date)
+
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+const mmss=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return pad(Math.floor(s/60))+':'+pad(s%60);};
+const hhmm=d=>pad(d.getHours())+':'+pad(d.getMinutes());
+
+function getRemain(){return state==='running'?Math.max(0,endTime-Date.now()):remainMs;}
+
+// ===== +1 / +5 / +10 =====
+document.querySelectorAll('.add').forEach(b=>b.addEventListener('click',()=>{
+  const add=+b.dataset.m*60000;
+  if(state==='alarm'){ if(add<0) return; resetAll(); }
+  if(add>0){
+    totalMs+=add;
+    if(state==='running') endTime+=add; else remainMs+=add;
+  }else{
+    // 빼기: 남은 시간은 0 아래로 내려가지 않음
+    const r=getRemain();
+    const cut=Math.min(-add,r);
+    if(state==='running') endTime-=cut; else remainMs-=cut;
+    totalMs=Math.max(totalMs-cut,getRemain());
+    if(state!=='running'&&remainMs<=0) resetAll();
+  }
+}));
+
+// ===== 시작/정지 =====
+$('topHalf').addEventListener('click',onTop);
+$('botHalf').addEventListener('click',onBot);
+function onTop(){
+  if(state==='paused'){resume();}
+  else onMain();
+}
+function onBot(){
+  if(state==='paused'){resetAll();}
+  else onMain();
+}
+function onMain(){
+  if(state==='idle'){
+    if(remainMs<=0) return;
+    unlockAudio();
+    startClock=new Date();
+    endTime=Date.now()+remainMs;state='running';
+  }else if(state==='running'){
+    remainMs=Math.max(0,endTime-Date.now());state='paused';$('ctrl').classList.add('paused');
+  }else if(state==='alarm'){resetAll();}
+}
+function resume(){endTime=Date.now()+remainMs;state='running';$('ctrl').classList.remove('paused');}
+function resetAll(){stopAlarm();state='idle';totalMs=0;remainMs=0;startClock=null;$('ctrl').classList.remove('paused');}
+
+// ===== 알람 (Web Audio) =====
+let actx=null, alarmTimer=null, alarmEndTimeout=null;
+// ── 알람 음악 (레포의 Asset/sounds/alarm.mp3) ──
+const ALARM_SRC='Asset/sounds/alarm.mp3';
+const alarmAudio=new Audio(ALARM_SRC);
+alarmAudio.loop=true; alarmAudio.preload='auto';
+let mp3Ok=true; alarmAudio.addEventListener('error',()=>{mp3Ok=false;});
+let audioUnlocked=false;
+function unlockAudio(){
+  // 모바일: 사용자 터치 순간에 한 번 재생→정지해 두어야 나중에 자동 재생이 허용됨
+  if(!audioUnlocked){audioUnlocked=true;alarmAudio.muted=true;
+    alarmAudio.play().then(()=>{alarmAudio.pause();alarmAudio.currentTime=0;alarmAudio.muted=false;})
+      .catch(()=>{alarmAudio.muted=false;});}
+  if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}} if(actx&&actx.state==='suspended')actx.resume();}
+function beep(t,f){const o=actx.createOscillator(),g=actx.createGain();o.type='sine';o.frequency.value=f;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.35,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);
+  o.connect(g).connect(actx.destination);o.start(t);o.stop(t+0.2);}
+function startAlarm(){
+  state='alarm';remainMs=0;
+  if(navigator.vibrate) navigator.vibrate([300,150,300,150,300]);
+  if(mp3Ok){
+    alarmAudio.currentTime=0;
+    alarmAudio.play().then(()=>{alarmEndTimeout=setTimeout(stopAlarm,60000);})
+      .catch(()=>{mp3Ok=false;beepAlarm();});
+    return;
+  }
+  beepAlarm();
+}
+function beepAlarm(){
+  if(!actx) return;
+  const ring=()=>{const t=actx.currentTime;[0,0.22,0.44,0.66].forEach(d=>beep(t+d,880));};
+  ring();alarmTimer=setInterval(ring,1200);
+  alarmEndTimeout=setTimeout(stopAlarm,15000);
+}
+function stopAlarm(){alarmAudio.pause();alarmAudio.currentTime=0;clearInterval(alarmTimer);clearTimeout(alarmEndTimeout);alarmTimer=null;}
+
+// ===== 원: 물에 뜬 듯한 스프링 모션 =====
+let kY=BAR_TOP, kV=0, lastT=performance.now();
+const K=30, C=9; // 강성, 감쇠 (감쇠↑ → 바운스 줄임)
+
+function loop(now){
+  const dt=Math.min(0.05,(now-lastT)/1000);lastT=now;
+  const bar=$('bar');
+  if(bar.offsetTop!==BAR_TOP||bar.offsetHeight!==BAR_H){ // 레이아웃 전환 시 원 위치 맞추기
+    const rel=(kY-BAR_TOP)/BAR_H;BAR_TOP=bar.offsetTop;BAR_H=bar.offsetHeight;kY=BAR_TOP+rel*BAR_H;kV=0;}
+  let r=getRemain();
+  if(state==='running'&&r<=0){startAlarm();r=0;}
+
+  // 목표 위치
+  let ratio=(state==='idle'||totalMs<=0)?0:Math.min(1,r/totalMs);
+  const target=BAR_TOP+BAR_H*ratio;
+
+  // 스프링 적분 (반복 소분할로 안정화)
+  const steps=4,h=dt/steps;
+  for(let i=0;i<steps;i++){const a=-K*(kY-target)-C*kV;kV+=a*h;kY+=kV*h;}
+  // 아주 미세한 둥실거림
+  const bob=(state==='running'||state==='paused')?Math.sin(now/650)*0.6:0;
+  const y=kY+bob;
+  $('knob').style.top=y+'px';
+
+  // 텍스트
+  $('remain').textContent=mmss(r);
+  $('sTop').textContent='00:00';
+  $('sMid').textContent=mmss(totalMs/2);
+  $('sBot').textContent=mmss(totalMs);
+
+  const nowD=new Date();
+  const st=startClock||nowD;
+  const en=state==='running'?new Date(endTime):new Date(nowD.getTime()+r);
+  $('startAt').textContent=hhmm(st);
+  $('endAt').textContent=hhmm(en);
+
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
