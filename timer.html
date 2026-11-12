@@ -349,6 +349,27 @@ let actx=null, alarmTimer=null, alarmEndTimeout=null;
 // ── 알람 음악 (레포의 Asset/sounds/alarm.mp3) ──
 const ALARM_SRC='Asset/sounds/alarm.mp3';
 const alarmAudio=new Audio(ALARM_SRC);
+// ── 페이드인 설정 ──
+const FADE_SEC=10;     // 최대 볼륨까지 걸리는 시간(초)
+const START_VOL=0.02;  // 시작 볼륨 (지수 램프는 0에서 시작 불가)
+let alarmGain=null, fadeTimer=null;
+function setupGain(){
+  if(alarmGain||!actx) return;
+  try{const src=actx.createMediaElementSource(alarmAudio);
+    alarmGain=actx.createGain(); src.connect(alarmGain).connect(actx.destination);}catch(e){alarmGain=null;}
+}
+function fadeIn(){
+  if(alarmGain){
+    const g=alarmGain.gain,t=actx.currentTime;
+    g.cancelScheduledValues(t); g.setValueAtTime(START_VOL,t);
+    g.exponentialRampToValueAtTime(1,t+FADE_SEC);
+  }else{
+    clearInterval(fadeTimer); alarmAudio.volume=START_VOL;
+    const t0=performance.now();
+    fadeTimer=setInterval(()=>{const p=Math.min(1,(performance.now()-t0)/(FADE_SEC*1000));
+      alarmAudio.volume=START_VOL+(1-START_VOL)*p*p; if(p>=1)clearInterval(fadeTimer);},50);
+  }
+}
 alarmAudio.loop=true; alarmAudio.preload='auto';
 let mp3Ok=true; alarmAudio.addEventListener('error',()=>{mp3Ok=false;});
 let audioUnlocked=false;
@@ -357,7 +378,7 @@ function unlockAudio(){
   if(!audioUnlocked){audioUnlocked=true;alarmAudio.muted=true;
     alarmAudio.play().then(()=>{alarmAudio.pause();alarmAudio.currentTime=0;alarmAudio.muted=false;})
       .catch(()=>{alarmAudio.muted=false;});}
-  if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}} if(actx&&actx.state==='suspended')actx.resume();}
+  if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}} if(actx&&actx.state==='suspended')actx.resume(); setupGain();}
 function beep(t,f){const o=actx.createOscillator(),g=actx.createGain();o.type='sine';o.frequency.value=f;
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.35,t+0.01);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);
   o.connect(g).connect(actx.destination);o.start(t);o.stop(t+0.2);}
@@ -366,6 +387,7 @@ function startAlarm(){
   if(navigator.vibrate) navigator.vibrate([300,150,300,150,300]);
   if(mp3Ok){
     alarmAudio.currentTime=0;
+    fadeIn();
     alarmAudio.play().then(()=>{alarmEndTimeout=setTimeout(stopAlarm,60000);})
       .catch(()=>{mp3Ok=false;beepAlarm();});
     return;
@@ -378,7 +400,7 @@ function beepAlarm(){
   ring();alarmTimer=setInterval(ring,1200);
   alarmEndTimeout=setTimeout(stopAlarm,15000);
 }
-function stopAlarm(){alarmAudio.pause();alarmAudio.currentTime=0;clearInterval(alarmTimer);clearTimeout(alarmEndTimeout);alarmTimer=null;}
+function stopAlarm(){alarmAudio.pause();alarmAudio.currentTime=0;clearInterval(fadeTimer);if(alarmGain)alarmGain.gain.cancelScheduledValues(actx.currentTime);clearInterval(alarmTimer);clearTimeout(alarmEndTimeout);alarmTimer=null;}
 
 // ===== 원: 물에 뜬 듯한 스프링 모션 =====
 let kY=BAR_TOP, kV=0, lastT=performance.now();
