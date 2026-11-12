@@ -477,6 +477,19 @@ document.getElementById("nav-list").addEventListener("click", () => {
     overlay.classList.remove("open");
 });
 
+// 타이머 / Death Star Plan 페이지로 이동
+document.getElementById("nav-timer").addEventListener("click", () => {
+    location.href = "timer.html";
+});
+document.getElementById("DSplan").addEventListener("click", () => {
+    location.href = "dsplan.html";
+});
+
+// timer.html 사이드바에서 넘어왔을 때 (?view=today / ?view=list)
+if (new URLSearchParams(location.search).get("view") === "today") {
+    document.getElementById("nav-today").click();
+}
+
 let datePickerInput = document.getElementById("date-picker-input");
 
 document.getElementById("current-date").addEventListener("click", () => {
